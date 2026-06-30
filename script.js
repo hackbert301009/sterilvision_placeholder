@@ -7,10 +7,9 @@
    Einfach URL/Text ändern, Einträge entfernen oder ergänzen.
    ============================================================ */
 const SOCIALS = [
-  { label: 'E-Mail',    url: 'mailto:kontakt@sterilvision.de', icon: 'mail',     primary: true },
-  { label: 'Instagram', url: 'https://instagram.com/sterilvision', icon: 'instagram' },
-  { label: 'LinkedIn',  url: 'https://www.linkedin.com/in/albert-heruth-37aa74379/', icon: 'linkedin' },
-  { label: 'GitHub',    url: 'https://github.com/hackbert301009', icon: 'github' },
+  { label: 'E-Mail',   url: 'mailto:albert.heruth@gmail.com', icon: 'mail', primary: true },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/albert-heruth-37aa74379/', icon: 'linkedin' },
+  { label: 'GitHub',   url: 'https://github.com/hackbert301009', icon: 'github' },
 ];
 
 const ICONS = {
