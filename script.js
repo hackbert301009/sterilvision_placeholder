@@ -1,5 +1,5 @@
 /* ───────────────────────────────────────────────────────────
-   STERILVISION — Wartungsseite · Intro, Cursor & Animation
+   STERILVISION — Wartungsseite · Intro & Kontakt
    ─────────────────────────────────────────────────────────── */
 
 /* ============================================================
@@ -29,7 +29,6 @@ const ICONS = {
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const root = document.documentElement;
 const body = document.body;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -40,7 +39,6 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (reduced || !el) { finish(); if (el) el.style.display = 'none'; return; }
 
-  // Build slat curtain
   const slats = document.getElementById('intro-slats');
   const N = window.innerWidth < 700 ? 4 : 7;
   for (let i = 0; i < N; i++) {
@@ -72,148 +70,4 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Safety: never trap the user behind the intro
   setTimeout(() => { if (!body.classList.contains('ready')) closeIntro(); }, 6000);
-})();
-
-/* ── Custom scanner cursor (desktop only) ──────────────── */
-(function cursor() {
-  const c = document.getElementById('cursor');
-  if (!c || reduced || !matchMedia('(pointer: fine)').matches) return;
-  let cx = -100, cy = -100, tx = -100, ty = -100;
-  c.style.opacity = '0';
-  addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; c.style.opacity = '1'; }, { passive: true });
-  (function loop() {
-    cx += (tx - cx) * 0.22; cy += (ty - cy) * 0.22;
-    c.style.transform = `translate(${cx}px, ${cy}px)`;
-    requestAnimationFrame(loop);
-  })();
-  addEventListener('pointerover', (e) => { if (e.target.closest('a, button')) root.classList.add('cursor-hover'); });
-  addEventListener('pointerout', (e) => { if (e.target.closest('a, button')) root.classList.remove('cursor-hover'); });
-})();
-
-/* ── Emblem parallax ───────────────────────────────────── */
-(function parallax() {
-  const emblem = document.getElementById('emblem');
-  if (!emblem || reduced) return;
-  addEventListener('pointermove', (e) => {
-    const x = (e.clientX / innerWidth - 0.5) * 14;
-    const y = (e.clientY / innerHeight - 0.5) * 14;
-    emblem.style.transform = `translate(${x}px, ${y}px)`;
-  }, { passive: true });
-})();
-
-/* ── Canvas scan field ─────────────────────────────────── */
-(function field() {
-  const canvas = document.getElementById('field');
-  if (!canvas || reduced) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, dpr, nodes, raf;
-  const COUNT = () => (innerWidth < 700 ? 46 : 80);
-  const LINK = 150;
-  const BLUE = '74,159,224';
-
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = canvas.width = innerWidth * dpr; h = canvas.height = innerHeight * dpr;
-    canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px';
-  }
-  function init() {
-    nodes = Array.from({ length: COUNT() }, () => ({
-      x: Math.random() * w, y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.18 * dpr, vy: (Math.random() - 0.5) * 0.18 * dpr,
-      anomaly: Math.random() < 0.08, r: (Math.random() * 1.4 + 0.8) * dpr, ph: Math.random() * 6.28,
-    }));
-  }
-  function step(time) {
-    ctx.clearRect(0, 0, w, h);
-    const link = LINK * dpr;
-    for (let i = 0; i < nodes.length; i++) {
-      const n = nodes[i];
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > w) n.vx *= -1;
-      if (n.y < 0 || n.y > h) n.vy *= -1;
-      for (let j = i + 1; j < nodes.length; j++) {
-        const m = nodes[j];
-        const dx = n.x - m.x, dy = n.y - m.y, d = Math.hypot(dx, dy);
-        if (d < link) {
-          ctx.strokeStyle = `rgba(${BLUE},${(1 - d / link) * 0.26})`;
-          ctx.lineWidth = dpr * 0.6;
-          ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
-        }
-      }
-    }
-    for (const n of nodes) {
-      const pulse = n.anomaly ? 0.5 + 0.5 * Math.sin(time * 0.004 + n.ph) : 1;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r * (n.anomaly ? 1.6 : 1), 0, 6.2832);
-      if (n.anomaly) { ctx.fillStyle = `rgba(239,68,68,${0.4 + pulse * 0.5})`; ctx.shadowColor = 'rgba(239,68,68,0.8)'; ctx.shadowBlur = 12 * dpr; }
-      else { ctx.fillStyle = `rgba(120,180,235,0.7)`; ctx.shadowColor = `rgba(${BLUE},0.6)`; ctx.shadowBlur = 6 * dpr; }
-      ctx.fill(); ctx.shadowBlur = 0;
-    }
-    raf = requestAnimationFrame(step);
-  }
-  resize(); init(); raf = requestAnimationFrame(step);
-  let to;
-  addEventListener('resize', () => { clearTimeout(to); to = setTimeout(() => { resize(); init(); }, 200); });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf); else raf = requestAnimationFrame(step);
-  });
-})();
-
-/* ── Text scramble on hover (data-text) ────────────────── */
-(function scramble() {
-  if (reduced) return;
-  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%@&*0123456789';
-  document.querySelectorAll('[data-text]').forEach((el) => {
-    const orig = el.dataset.text;
-    let iv;
-    el.addEventListener('pointerenter', () => {
-      let it = 0;
-      clearInterval(iv);
-      iv = setInterval(() => {
-        el.textContent = orig.split('').map((ch, i) => {
-          if (ch === ' ') return ' ';
-          return i < it ? orig[i] : CHARS[Math.floor(Math.random() * CHARS.length)];
-        }).join('');
-        if (it >= orig.length) { clearInterval(iv); el.textContent = orig; }
-        it += 0.5;
-      }, 30);
-    });
-  });
-})();
-
-/* ── 3D tilt for the platform preview ──────────────────── */
-(function tilt() {
-  const wrap = document.getElementById('platform-tilt');
-  if (!wrap || reduced || !matchMedia('(pointer: fine)').matches) return;
-  const card = wrap.querySelector('.tilt-card');
-  const sheen = wrap.querySelector('.tilt-sheen');
-  const MAX = 7;
-  wrap.addEventListener('pointermove', (e) => {
-    const r = wrap.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width;
-    const py = (e.clientY - r.top) / r.height;
-    card.style.transform = `rotateX(${(0.5 - py) * MAX * 2}deg) rotateY(${(px - 0.5) * MAX * 2}deg)`;
-    if (sheen) sheen.style.transform = `translateX(${(px - 0.5) * 120}%)`;
-  });
-  wrap.addEventListener('pointerleave', () => { card.style.transform = ''; });
-})();
-
-/* ── Aurora parallax (pointer depth) ───────────────────── */
-(function auroraParallax() {
-  if (reduced) return;
-  const layers = [...document.querySelectorAll('.aurora')];
-  if (!layers.length) return;
-  const depths = [2.5, -1.8, 1.4];
-  let tx = 0, ty = 0, x = 0, y = 0;
-  addEventListener('pointermove', (e) => {
-    tx = (e.clientX / innerWidth - 0.5); ty = (e.clientY / innerHeight - 0.5);
-  }, { passive: true });
-  (function loop() {
-    x += (tx - x) * 0.06; y += (ty - y) * 0.06;
-    layers.forEach((l, i) => {
-      const d = depths[i % depths.length] * 20;
-      l.style.translate = `${x * d}px ${y * d}px`;
-    });
-    requestAnimationFrame(loop);
-  })();
 })();
