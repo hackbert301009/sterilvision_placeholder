@@ -353,6 +353,41 @@ body {
 .hide-sm { display: inline-flex; }
 @media (max-width: 860px) { .hide-sm { display: none; } }
 
+/* ── Team & social boxes ───────────────────────────────── */
+.tk-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; }
+.tk-team { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.tk-social { display: grid; grid-template-rows: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .tk-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .tk-team { grid-template-columns: 1fr; } }
+
+.member { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--panel);
+  transition: border-color 0.35s var(--ease), transform 0.35s var(--ease); }
+.member:hover { border-color: var(--line-strong); transform: translateY(-3px); }
+.member-photo { aspect-ratio: 4 / 5; overflow: hidden; background: #0a0f16; }
+.member-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; transition: transform 0.6s var(--ease); }
+.member:hover .member-photo img { transform: scale(1.04); }
+.member-info { padding: 16px 18px; }
+.member-role { display: block; font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--blue); margin-bottom: 5px; }
+.member-name { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--text); }
+
+.sbox { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--panel); color: var(--text); text-decoration: none; min-height: 84px;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), transform 0.3s var(--ease); }
+.sbox:hover { border-color: var(--blue); background: rgba(var(--blue-rgb), 0.08); transform: translateY(-3px); }
+.sbox-ic { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 11px; border: 1px solid var(--line-strong); color: var(--blue); flex-shrink: 0; }
+.sbox-ic svg { width: 22px; height: 22px; }
+.sbox-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+.sbox-label { font-weight: 600; font-size: 1rem; }
+.sbox-handle { font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sbox-arrow { color: var(--faint); font-size: 1.1rem; transition: color 0.3s, transform 0.3s; }
+.sbox:hover .sbox-arrow { color: var(--blue); transform: translateX(3px); }
+
+/* Competition cards (links) */
+.comp { text-decoration: none; }
+.comp-txt { display: flex; flex-direction: column; flex: 1; }
+.comp-ext { margin-left: 8px; color: var(--faint); transition: color 0.25s, transform 0.25s; }
+.comp:hover .comp-ext { color: var(--blue); transform: translate(2px, -2px); }
+
 /* ══ INTRO / PRELOADER ═════════════════════════════════ */
 body.preload { overflow: hidden; height: 100vh; }
 #intro { display: none; }

@@ -102,18 +102,45 @@
         </div>
       </section>
 
-      <!-- MODULE · Systemdiagnose -->
-      <section class="module">
-        <div class="module-head"><span class="mh-title">Systemdiagnose</span><span class="mh-meta"><span class="led green"></span> Selbsttest</span></div>
+      <!-- MODULE · Team & Kontakt -->
+      <section class="module" id="team">
+        <div class="module-head"><span class="mh-title">Team · Gründer &amp; Kontakt</span><span class="mh-meta">2 Personen · 3 Kanäle</span></div>
         <div class="module-body">
-          <div class="diag">
-            <div class="diag-cell"><span class="dc-lbl">Dienste</span><span class="dc-val">3 / 4 aktiv</span></div>
-            <div class="diag-cell"><span class="dc-lbl">Vision-Engine</span><span class="dc-val"><span class="led amber"></span> Standby</span></div>
-            <div class="diag-cell"><span class="dc-lbl">Letzte Kalibrierung</span><span class="dc-val">18.06.2026</span></div>
-            <div class="diag-cell"><span class="dc-lbl">Firmware</span><span class="dc-val">v2.0.4</span></div>
-            <div class="diag-cell diag-bar-cell">
-              <span class="dc-lbl">Selbsttest · <span id="selftest-pct">0%</span></span>
-              <span class="diag-bar"><span id="selftest-bar"></span></span>
+          <div class="tk-grid">
+            <!-- Left: founder boxes -->
+            <div class="tk-team">
+              <article class="member reveal">
+                <div class="member-photo"><img src="assets/team-albert.jpg" alt="Albert Heruth" loading="lazy" /></div>
+                <div class="member-info">
+                  <span class="member-role">Gründer · KI-Experte</span>
+                  <h3 class="member-name">Albert Heruth</h3>
+                </div>
+              </article>
+              <article class="member reveal">
+                <div class="member-photo"><img src="assets/team-jakob.jpg" alt="Jakob Rudolph" loading="lazy" /></div>
+                <div class="member-info">
+                  <span class="member-role">Mitgründer · Programmierer</span>
+                  <h3 class="member-name">Jakob Rudolph</h3>
+                </div>
+              </article>
+            </div>
+            <!-- Right: social boxes -->
+            <div class="tk-social">
+              <a class="sbox reveal" href="mailto:albert.heruth@gmail.com">
+                <span class="sbox-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6" stroke-linecap="round"/></svg></span>
+                <span class="sbox-main"><span class="sbox-label">E-Mail</span><span class="sbox-handle">albert.heruth@gmail.com</span></span>
+                <span class="sbox-arrow">→</span>
+              </a>
+              <a class="sbox reveal" href="https://www.linkedin.com/in/albert-heruth-37aa74379/" target="_blank" rel="noopener">
+                <span class="sbox-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.02-2.96-1.8-2.96-1.8 0-2.08 1.4-2.08 2.86V21h-4z"/></svg></span>
+                <span class="sbox-main"><span class="sbox-label">LinkedIn</span><span class="sbox-handle">Albert Heruth</span></span>
+                <span class="sbox-arrow">↗</span>
+              </a>
+              <a class="sbox reveal" href="https://github.com/hackbert301009" target="_blank" rel="noopener">
+                <span class="sbox-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.22-3.37-1.22-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.81-4.58 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg></span>
+                <span class="sbox-main"><span class="sbox-label">GitHub</span><span class="sbox-handle">@hackbert301009</span></span>
+                <span class="sbox-arrow">↗</span>
+              </a>
             </div>
           </div>
         </div>
@@ -151,18 +178,21 @@
         <div class="module-head"><span class="mh-title">Teilnahme · Wettbewerbe</span><span class="mh-meta"><span class="led amber"></span> Geplant</span></div>
         <div class="module-body">
           <div class="comp-badges">
-            <div class="comp reveal">
+            <a class="comp reveal" href="https://www.medica.de/" target="_blank" rel="noopener">
               <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v6m0 0a4 4 0 0 0 4-4H8a4 4 0 0 0 4 4Zm-5 9h10l-1 8H8l-1-8Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span><span class="comp-name">MEDICA Startup Competition</span><span class="comp-meta">Teilnahme geplant</span></span>
-            </div>
-            <div class="comp reveal">
+              <span class="comp-txt"><span class="comp-name">MEDICA Startup Competition</span><span class="comp-meta">Teilnahme geplant</span></span>
+              <span class="comp-ext">↗</span>
+            </a>
+            <a class="comp reveal" href="https://www.bw-ki.de/" target="_blank" rel="noopener">
               <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="9" r="6"/><path d="m9 14-2 7 5-3 5 3-2-7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span><span class="comp-name">Bundeswettbewerb KI (BWKI)</span><span class="comp-meta">2026 · dabei</span></span>
-            </div>
-            <div class="comp reveal">
+              <span class="comp-txt"><span class="comp-name">Bundeswettbewerb KI (BWKI)</span><span class="comp-meta">2026 · dabei</span></span>
+              <span class="comp-ext">↗</span>
+            </a>
+            <a class="comp reveal" href="https://www.jugend-forscht.de/" target="_blank" rel="noopener">
               <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span><span class="comp-name">Jugend forscht</span><span class="comp-meta">Teilnahme geplant</span></span>
-            </div>
+              <span class="comp-txt"><span class="comp-name">Jugend forscht</span><span class="comp-meta">Teilnahme geplant</span></span>
+              <span class="comp-ext">↗</span>
+            </a>
           </div>
         </div>
       </section>
@@ -186,10 +216,6 @@
               <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
             </div>
           </form>
-          <div class="k-alt">
-            <p class="contact-label">Oder direkt</p>
-            <div class="links" id="social-links"></div>
-          </div>
         </div>
       </section>
     </div>
