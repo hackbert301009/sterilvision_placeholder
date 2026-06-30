@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STERILVISION — Wartungsmodus</title>
-  <meta name="description" content="STERILVISION — KI-gestützte Inspektion steriler Trays. Wir entwickeln eine eigene, quelloffene Plattform und erkennen Defekte mit KI. Aktuell im Wartungsmodus." />
-  <meta name="theme-color" content="#070a0f" />
+  <title>STERILVISION — HMI · Wartungsmodus</title>
+  <meta name="description" content="STERILVISION — KI-gestützte Inspektion steriler Trays. Eigene quelloffene Plattform, Defekterkennung in Echtzeit. Aktuell im Wartungsmodus." />
+  <meta name="theme-color" content="#0f1a28" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
   <meta property="og:type" content="website" />
@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="preload">
@@ -31,103 +31,143 @@
     <div class="intro-inner">
       <div class="intro-mark"><img src="assets/logo-mark.png" alt="" width="520" height="205" /></div>
       <div class="intro-reveal"><span>STERILVISION</span></div>
-      <div class="intro-sub"><span>VISION PIPELINE · SYSTEM LOADING</span></div>
+      <div class="intro-sub"><span>HMI · SYSTEM LOADING</span></div>
     </div>
     <div class="intro-counter"><span id="counter">00</span><i>%</i></div>
     <div class="intro-bar"><span id="intro-bar-fill"></span></div>
   </div>
 
-  <!-- ── Background (industrial blueprint) ───────────────── -->
+  <!-- ── Backdrop ────────────────────────────────────────── -->
   <div class="bg" aria-hidden="true">
     <div class="bg-grad"></div>
     <div class="bg-grid"></div>
     <div class="bg-sheen"></div>
   </div>
-  <div class="marks" aria-hidden="true">
-    <span class="mk tl"></span><span class="mk tr"></span>
-    <span class="mk bl"></span><span class="mk br"></span>
-  </div>
   <div class="vignette" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
 
-  <!-- ── Top bar ─────────────────────────────────────────── -->
-  <header class="topbar">
-    <div class="brand-mini"><span class="dot"></span><span>STERILVISION</span></div>
-    <div class="status-pill"><span class="blink">●</span> System im Wartungsmodus</div>
-  </header>
+  <!-- ══ HMI PANEL ═══════════════════════════════════════ -->
+  <div class="hmi reveal">
 
-  <!-- ── Hero ────────────────────────────────────────────── -->
-  <main class="stage">
-    <p class="eyebrow reveal">BWKI 2026 &nbsp;·&nbsp; Medical Computer Vision</p>
-
-    <div class="emblem reveal">
-      <div class="emblem-glow"></div>
-      <div class="emblem-img">
-        <img src="assets/logo-emblem.png" alt="STERILVISION — Roboter-Inspektion steriler Trays" width="847" height="464" />
+    <!-- Status bar -->
+    <header class="hmi-bar">
+      <div class="hmi-bar-left">
+        <span class="led amber"></span>
+        <span class="hmi-id">STERILVISION</span>
+        <span class="hmi-dim">HMI · STATION&nbsp;01</span>
       </div>
-    </div>
+      <div class="hmi-bar-right">
+        <span class="hmi-stat"><span class="lbl">Betriebsart</span><span class="val amber-t">WARTUNG</span></span>
+        <span class="hmi-stat"><span class="lbl">Verbindung</span><span class="led green"></span></span>
+        <span class="hmi-stat"><span class="lbl">Uhr</span><span class="val" id="clock">--:--:--</span></span>
+      </div>
+    </header>
 
-    <h1 class="headline reveal">Wir kalibrieren gerade.</h1>
-    <p class="lead reveal">
-      Unsere Vision-Pipeline zur Inspektion steriler Trays wird gewartet und
-      weiterentwickelt. Wir sind in Kürze wieder online.
-    </p>
+    <div class="hmi-body">
 
-    <div class="contact reveal">
-      <p class="contact-label">Bei Anliegen erreichst du uns</p>
-      <div class="links" id="social-links"></div>
-    </div>
-  </main>
-
-  <!-- ── What we build (tiles) ───────────────────────────── -->
-  <section class="work" aria-label="Was wir bauen">
-    <p class="eyebrow center reveal" id="work-kicker">Was wir bauen</p>
-    <div class="tiles">
-      <article class="tile reveal">
-        <div class="tile-media"><img src="assets/platform-preview.jpg" alt="SterilVision Plattform — Desktop & Mobile" loading="lazy" /></div>
-        <div class="tile-body">
-          <div class="tile-top">
-            <span class="tile-num">01</span>
-            <span class="tile-eyebrow" id="sw-eyebrow">Open Source</span>
+      <!-- MODULE · Startbildschirm -->
+      <section class="module module-hero">
+        <div class="module-head"><span class="mh-title">Ansicht · Startbildschirm</span><span class="mh-meta"><span class="led amber"></span> Status: Wartung</span></div>
+        <div class="module-body stage">
+          <p class="eyebrow reveal">BWKI 2026 &nbsp;·&nbsp; Medical Computer Vision</p>
+          <div class="emblem reveal">
+            <div class="emblem-glow"></div>
+            <div class="emblem-img"><img src="assets/logo-emblem.png" alt="STERILVISION — Roboter-Inspektion steriler Trays" width="847" height="464" /></div>
           </div>
-          <h2 class="tile-title" id="sw-title">Eigene Plattform</h2>
-          <p class="tile-text" id="sw-body">
-            Wir entwickeln unsere Software eigenständig und quelloffen – vom
-            Desktop-Dashboard bis zur mobilen Inspektion. Volle Transparenz,
-            kein Black-Box-System.
+          <h1 class="headline reveal">Wir kalibrieren gerade.</h1>
+          <p class="lead reveal">
+            Unsere Vision-Pipeline zur Inspektion steriler Trays wird gewartet und
+            weiterentwickelt. Wir sind in Kürze wieder online.
           </p>
-          <ul class="tile-tags" id="sw-tags">
-            <li>Desktop-Dashboard</li><li>Mobile Inspektion</li><li>Quelloffen</li>
-          </ul>
         </div>
-      </article>
+      </section>
 
-      <article class="tile reveal">
-        <div class="tile-media"><img src="assets/auswertung.jpg" alt="KI-Auswertung — Defekterkennung an Instrumenten" loading="lazy" /></div>
-        <div class="tile-body">
-          <div class="tile-top">
-            <span class="tile-num">02</span>
-            <span class="tile-eyebrow" id="aw-eyebrow">Auswertung</span>
+      <!-- MODULE · Was wir bauen -->
+      <section class="module">
+        <div class="module-head"><span class="mh-title">Was wir bauen</span><span class="mh-meta">2 Module</span></div>
+        <div class="module-body">
+          <div class="tiles">
+            <article class="tile reveal">
+              <div class="tile-media"><img src="assets/platform-preview.jpg" alt="SterilVision Plattform — Desktop & Mobile" loading="lazy" /></div>
+              <div class="tile-body">
+                <div class="tile-top"><span class="tile-num">01</span><span class="tile-eyebrow">Open Source</span></div>
+                <h2 class="tile-title">Eigene Plattform</h2>
+                <p class="tile-text">Wir entwickeln unsere Software eigenständig und quelloffen – vom Desktop-Dashboard bis zur mobilen Inspektion. Volle Transparenz, kein Black-Box-System.</p>
+                <ul class="tile-tags"><li>Desktop-Dashboard</li><li>Mobile Inspektion</li><li>Quelloffen</li></ul>
+              </div>
+            </article>
+            <article class="tile reveal">
+              <div class="tile-media"><img src="assets/auswertung.jpg" alt="KI-Auswertung — Defekterkennung an Instrumenten" loading="lazy" /></div>
+              <div class="tile-body">
+                <div class="tile-top"><span class="tile-num">02</span><span class="tile-eyebrow">Auswertung</span></div>
+                <h2 class="tile-title">Defekte erkennen</h2>
+                <p class="tile-text">Unsere KI erkennt Defekte am Instrument in Echtzeit – Oberflächenschäden, Rückstände, Vollständigkeit. Erklärbare Heatmaps und ein klares i.O./N.i.O.-Urteil.</p>
+                <ul class="tile-tags"><li>Oberflächenschäden</li><li>Rückstände</li><li>Vollständigkeit</li></ul>
+              </div>
+            </article>
           </div>
-          <h2 class="tile-title" id="aw-title">Defekte erkennen</h2>
-          <p class="tile-text" id="aw-body">
-            Unsere KI erkennt Defekte am Instrument in Echtzeit –
-            Oberflächenschäden, Rückstände, Vollständigkeit. Erklärbare Heatmaps
-            und ein klares i.O./N.i.O.-Urteil.
-          </p>
-          <ul class="tile-tags" id="aw-tags">
-            <li>Oberflächenschäden</li><li>Rückstände</li><li>Vollständigkeit</li>
-          </ul>
         </div>
-      </article>
-    </div>
-  </section>
+      </section>
 
-  <footer class="footer">
-    <span>© <span id="year">2026</span> STERILVISION</span>
-    <span class="sep">·</span><span>Medical Computer Vision</span>
-    <span class="sep">·</span><span>BWKI 2026</span>
-  </footer>
+      <!-- MODULE · Wettbewerbe -->
+      <section class="module">
+        <div class="module-head"><span class="mh-title">Teilnahme · Wettbewerbe</span><span class="mh-meta"><span class="led amber"></span> Geplant</span></div>
+        <div class="module-body">
+          <div class="comp-badges">
+            <div class="comp reveal">
+              <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v6m0 0a4 4 0 0 0 4-4H8a4 4 0 0 0 4 4Zm-5 9h10l-1 8H8l-1-8Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span><span class="comp-name">MEDICA Startup Competition</span><span class="comp-meta">Teilnahme geplant</span></span>
+            </div>
+            <div class="comp reveal">
+              <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="9" r="6"/><path d="m9 14-2 7 5-3 5 3-2-7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span><span class="comp-name">Bundeswettbewerb KI (BWKI)</span><span class="comp-meta">2026 · dabei</span></span>
+            </div>
+            <div class="comp reveal">
+              <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span><span class="comp-name">Jugend forscht</span><span class="comp-meta">Teilnahme geplant</span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE · Serviceanfrage / Kontakt -->
+      <section class="module" id="kontakt">
+        <div class="module-head"><span class="mh-title">Serviceanfrage · Kontakt</span><span class="mh-meta"><span class="led green"></span> Online</span></div>
+        <div class="module-body kontakt">
+          <p class="k-sub">Anfragen, Kooperationen oder Fragen zum System? Schreib uns – wir melden uns.</p>
+          <form id="contact-form" class="form" action="https://formspree.io/f/xaqgdkwa" method="POST">
+            <div class="row">
+              <div class="field"><label for="f-name">Name</label><input id="f-name" type="text" name="name" required autocomplete="name" /></div>
+              <div class="field"><label for="f-mail">E-Mail</label><input id="f-mail" type="email" name="email" required autocomplete="email" /></div>
+            </div>
+            <div class="field"><label for="f-msg">Nachricht</label><textarea id="f-msg" name="message" rows="5" required></textarea></div>
+            <div class="form-actions">
+              <button type="submit" class="btn-submit" id="submit-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4 20-7Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Nachricht senden
+              </button>
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+          <div class="k-alt">
+            <p class="contact-label">Oder direkt</p>
+            <div class="links" id="social-links"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Function-key strip -->
+    <footer class="hmi-foot">
+      <nav class="fkeys">
+        <a class="fkey" href="#kontakt"><span class="fk">F1</span> Kontakt</a>
+        <a class="fkey" href="impressum.html"><span class="fk">F2</span> Impressum</a>
+        <a class="fkey" href="datenschutz.html"><span class="fk">F3</span> Datenschutz</a>
+        <a class="fkey" href="mailto:albert.heruth@gmail.com"><span class="fk">F4</span> E-Mail</a>
+      </nav>
+      <div class="hmi-foot-meta">© <span id="year">2026</span> STERILVISION · BWKI 2026</div>
+    </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>

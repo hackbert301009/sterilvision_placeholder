@@ -71,3 +71,41 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Safety: never trap the user behind the intro
   setTimeout(() => { if (!body.classList.contains('ready')) closeIntro(); }, 6000);
 })();
+
+/* ── HMI clock ─────────────────────────────────────────── */
+(function clock() {
+  const el = document.getElementById('clock');
+  if (!el) return;
+  const pad = (n) => String(n).padStart(2, '0');
+  const upd = () => { const d = new Date(); el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; };
+  upd(); setInterval(upd, 1000);
+})();
+
+/* ── Contact form → Formspree (AJAX, no redirect) ──────── */
+(function contactForm() {
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('form-status');
+  const btn = document.getElementById('submit-btn');
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Wird gesendet …'; status.className = 'form-status busy';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (res.ok) {
+        form.reset();
+        status.textContent = 'Gesendet — danke! Wir melden uns.'; status.className = 'form-status ok';
+      } else {
+        const d = await res.json().catch(() => ({}));
+        status.textContent = (d.errors && d.errors[0] && d.errors[0].message) || 'Senden fehlgeschlagen. Bitte per E-Mail versuchen.';
+        status.className = 'form-status err';
+      }
+    } catch {
+      status.textContent = 'Senden fehlgeschlagen. Bitte per E-Mail versuchen.';
+      status.className = 'form-status err';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
