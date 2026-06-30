@@ -33,43 +33,10 @@ const root = document.documentElement;
 const body = document.body;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ── Telemetry console (typed) — startet nach dem Intro ── */
-let consoleStarted = false;
-function startConsole() {
-  if (consoleStarted) return; consoleStarted = true;
-  const el = document.getElementById('console-body');
-  if (!el) return;
-  const lines = [
-    { t: '$ ./system_check --maintenance', c: 'cmd' },
-    { t: 'Lade Vision-Modelle ............. [OK]', c: 'ok' },
-    { t: 'Initialisiere Kamera-Kalibrierung  [OK]', c: 'ok' },
-    { t: 'PaDiM Anomalie-Engine ........... [OK]', c: 'ok' },
-    { t: 'HMI-Dashboard ................... [PAUSE]', c: 'warn' },
-    { t: 'System-Status ................... WARTUNG', c: 'warn' },
-    { t: '> Wir sind bald wieder online.', c: 'cmd' },
-  ];
-  if (reduced) { el.innerHTML = lines.map((l) => `<span class="${l.c}">${l.t}</span>`).join('\n'); return; }
-  let li = 0;
-  const next = () => {
-    if (li >= lines.length) return;
-    const line = lines[li];
-    const span = document.createElement('span');
-    span.className = line.c; el.appendChild(span);
-    let ci = 0;
-    const tick = () => {
-      span.textContent = line.t.slice(0, ci++);
-      if (ci <= line.t.length) setTimeout(tick, 13);
-      else { el.appendChild(document.createTextNode('\n')); li++; setTimeout(next, 240); }
-    };
-    tick();
-  };
-  setTimeout(next, 400);
-}
-
 /* ── Intro / Preloader ─────────────────────────────────── */
 (function intro() {
   const el = document.getElementById('intro');
-  const finish = () => { body.classList.remove('preload'); body.classList.add('ready'); startConsole(); };
+  const finish = () => { body.classList.remove('preload'); body.classList.add('ready'); };
 
   if (reduced || !el) { finish(); if (el) el.style.display = 'none'; return; }
 
@@ -190,4 +157,63 @@ function startConsole() {
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(raf); else raf = requestAnimationFrame(step);
   });
+})();
+
+/* ── Text scramble on hover (data-text) ────────────────── */
+(function scramble() {
+  if (reduced) return;
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%@&*0123456789';
+  document.querySelectorAll('[data-text]').forEach((el) => {
+    const orig = el.dataset.text;
+    let iv;
+    el.addEventListener('pointerenter', () => {
+      let it = 0;
+      clearInterval(iv);
+      iv = setInterval(() => {
+        el.textContent = orig.split('').map((ch, i) => {
+          if (ch === ' ') return ' ';
+          return i < it ? orig[i] : CHARS[Math.floor(Math.random() * CHARS.length)];
+        }).join('');
+        if (it >= orig.length) { clearInterval(iv); el.textContent = orig; }
+        it += 0.5;
+      }, 30);
+    });
+  });
+})();
+
+/* ── 3D tilt for the platform preview ──────────────────── */
+(function tilt() {
+  const wrap = document.getElementById('platform-tilt');
+  if (!wrap || reduced || !matchMedia('(pointer: fine)').matches) return;
+  const card = wrap.querySelector('.tilt-card');
+  const sheen = wrap.querySelector('.tilt-sheen');
+  const MAX = 7;
+  wrap.addEventListener('pointermove', (e) => {
+    const r = wrap.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    card.style.transform = `rotateX(${(0.5 - py) * MAX * 2}deg) rotateY(${(px - 0.5) * MAX * 2}deg)`;
+    if (sheen) sheen.style.transform = `translateX(${(px - 0.5) * 120}%)`;
+  });
+  wrap.addEventListener('pointerleave', () => { card.style.transform = ''; });
+})();
+
+/* ── Aurora parallax (pointer depth) ───────────────────── */
+(function auroraParallax() {
+  if (reduced) return;
+  const layers = [...document.querySelectorAll('.aurora')];
+  if (!layers.length) return;
+  const depths = [2.5, -1.8, 1.4];
+  let tx = 0, ty = 0, x = 0, y = 0;
+  addEventListener('pointermove', (e) => {
+    tx = (e.clientX / innerWidth - 0.5); ty = (e.clientY / innerHeight - 0.5);
+  }, { passive: true });
+  (function loop() {
+    x += (tx - x) * 0.06; y += (ty - y) * 0.06;
+    layers.forEach((l, i) => {
+      const d = depths[i % depths.length] * 20;
+      l.style.translate = `${x * d}px ${y * d}px`;
+    });
+    requestAnimationFrame(loop);
+  })();
 })();

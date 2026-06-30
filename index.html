@@ -14,13 +14,11 @@
   <meta property="og:image" content="assets/logo-share.jpg" />
   <meta property="og:url" content="https://sterilvision.de" />
 
-  <!-- Mark JS early so we can gate the intro / reveals without FOUC -->
   <script>document.documentElement.classList.add('js');</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <!-- Display: Clash Display (Fontshare) · Body: Inter · Mono: JetBrains Mono -->
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
@@ -31,9 +29,7 @@
   <div id="intro" aria-hidden="true">
     <div class="intro-slats" id="intro-slats"></div>
     <div class="intro-inner">
-      <div class="intro-mark">
-        <img src="assets/logo-mark.png" alt="" width="520" height="205" />
-      </div>
+      <div class="intro-mark"><img src="assets/logo-mark.png" alt="" width="520" height="205" /></div>
       <div class="intro-reveal"><span>STERILVISION</span></div>
       <div class="intro-sub mono"><span>VISION PIPELINE // SYSTEM LOADING</span></div>
     </div>
@@ -41,37 +37,35 @@
     <div class="intro-bar"><span id="intro-bar-fill"></span></div>
   </div>
 
-  <!-- ── Custom scanner cursor (desktop only) ────────────── -->
+  <!-- ── Custom scanner cursor (desktop) ─────────────────── -->
   <div class="cursor" id="cursor" aria-hidden="true">
-    <span class="cursor-ring"></span>
-    <span class="cursor-cross"></span>
+    <span class="cursor-ring"></span><span class="cursor-cross"></span>
   </div>
 
-  <!-- ── Background layers ───────────────────────────────── -->
-  <canvas id="field" aria-hidden="true"></canvas>
-  <div class="grid" aria-hidden="true"></div>
-  <div class="glow glow-a" aria-hidden="true"></div>
-  <div class="glow glow-b" aria-hidden="true"></div>
-  <div class="scanbeam" aria-hidden="true"></div>
+  <!-- ── Background system ───────────────────────────────── -->
+  <div class="bg" id="bg" aria-hidden="true">
+    <canvas id="field"></canvas>
+    <div class="aurora a1"></div>
+    <div class="aurora a2"></div>
+    <div class="aurora a3"></div>
+    <div class="grid"></div>
+    <div class="scanbeam"></div>
+  </div>
   <div class="vignette" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
 
   <!-- ── Top bar ─────────────────────────────────────────── -->
   <header class="topbar">
-    <div class="brand-mini">
-      <span class="dot"></span>
-      <span class="mono">STERILVISION</span>
-    </div>
-    <div class="status-pill mono">
-      <span class="blink">●</span> SYSTEM IM WARTUNGSMODUS
-    </div>
+    <div class="brand-mini"><span class="dot"></span><span class="mono">STERILVISION</span></div>
+    <div class="status-pill mono"><span class="blink">●</span> SYSTEM IM WARTUNGSMODUS</div>
   </header>
 
-  <!-- ── Stage ───────────────────────────────────────────── -->
+  <!-- ── Hero ────────────────────────────────────────────── -->
   <main class="stage">
     <p class="kicker mono reveal">BWKI 2026 &nbsp;//&nbsp; MEDICAL COMPUTER VISION</p>
 
     <div class="emblem reveal" id="emblem">
+      <div class="radar"></div>
       <div class="ring ring-1"></div>
       <div class="ring ring-2"></div>
       <div class="ring ring-3"></div>
@@ -79,22 +73,23 @@
         <img src="assets/logo-emblem.png" alt="STERILVISION — Roboter-Inspektion steriler Trays" width="847" height="464" />
         <span class="scanline"></span>
       </div>
+      <!-- Live detection HUD -->
+      <div class="hud" aria-hidden="true">
+        <span class="bracket tl"></span><span class="bracket tr"></span>
+        <span class="bracket bl"></span><span class="bracket br"></span>
+        <span class="hud-tag tag-scan"><i class="pip ok"></i> ANOMALY&nbsp;SCAN&nbsp;·&nbsp;ACTIVE</span>
+        <span class="hud-tag tag-conf">CONF&nbsp;98.2%</span>
+        <span class="hud-tag tag-tray"><i class="pip warn"></i> TRAY&nbsp;CHECK</span>
+        <span class="det det-1"></span>
+        <span class="det det-2"></span>
+      </div>
     </div>
 
-    <h1 class="headline reveal">Wir kalibrieren gerade.</h1>
+    <h1 class="headline reveal" data-text="Wir kalibrieren gerade.">Wir kalibrieren gerade.</h1>
     <p class="lead reveal">
       Unsere KI-gestützte Vision-Pipeline für die Inspektion steriler Trays wird
       derzeit gewartet und weiterentwickelt. In Kürze sind wir wieder online.
     </p>
-
-    <div class="console reveal" role="status" aria-live="polite">
-      <div class="console-head mono">
-        <span class="d r"></span><span class="d y"></span><span class="d g"></span>
-        <span class="console-title">sterilvision@core:~/maintenance</span>
-      </div>
-      <pre id="console-body" class="mono"></pre>
-      <div class="progress"><span id="progress-bar"></span></div>
-    </div>
 
     <section class="contact reveal">
       <p class="contact-label mono">// Bei Anliegen erreichst du uns hier</p>
@@ -102,22 +97,31 @@
     </section>
   </main>
 
-  <!-- ── Product teaser ──────────────────────────────────── -->
-  <section class="teaser reveal" aria-label="Vorschau">
-    <div class="teaser-head mono">// COMING SOON — VISION PIPELINE</div>
-    <div class="teaser-grid">
-      <figure class="t-card"><img src="assets/dashboard.webp" alt="HMI Dashboard" loading="lazy" /><figcaption class="mono">HMI Dashboard</figcaption></figure>
-      <figure class="t-card"><img src="assets/heatmap.webp" alt="Anomalie-Heatmap" loading="lazy" /><figcaption class="mono">Anomalie-Heatmap</figcaption></figure>
-      <figure class="t-card"><img src="assets/instrument.jpg" alt="Instrumenten-Inspektion" loading="lazy" /><figcaption class="mono">Instrumenten-Scan</figcaption></figure>
+  <!-- ── Platform preview ────────────────────────────────── -->
+  <section class="platform" aria-label="Plattform-Vorschau">
+    <div class="platform-head reveal">
+      <p class="kicker mono">// PLATFORM PREVIEW</p>
+      <h2 class="p-title" data-text="Wherever you are.">Wherever you are.</h2>
+      <p class="p-sub">Vollständiges Dashboard am Arbeitsplatz · Mobile Inspektion per Smartphone</p>
+    </div>
+    <div class="tilt-wrap reveal" id="platform-tilt">
+      <div class="tilt-card">
+        <div class="tilt-bar mono">
+          <span class="d r"></span><span class="d y"></span><span class="d g"></span>
+          <span class="tilt-url">app.sterilvision.de</span>
+        </div>
+        <div class="tilt-screen">
+          <img src="assets/platform-preview.jpg" alt="SterilVision Plattform — Desktop-Dashboard und mobile Inspektion" loading="lazy" width="640" height="440" />
+          <span class="tilt-sheen"></span>
+        </div>
+      </div>
     </div>
   </section>
 
   <footer class="footer mono">
     <span>© <span id="year">2026</span> STERILVISION</span>
-    <span class="sep">·</span>
-    <span>Medical Computer Vision</span>
-    <span class="sep">·</span>
-    <span>BWKI 2026</span>
+    <span class="sep">·</span><span>Medical Computer Vision</span>
+    <span class="sep">·</span><span>BWKI 2026</span>
   </footer>
 
   <script src="script.js"></script>
