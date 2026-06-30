@@ -3,21 +3,23 @@
    Klinisch-dunkles Vision-System-Design. Cyan + Anomalie-Heat.
    ─────────────────────────────────────────────────────────── */
 :root {
-  --bg: #070b12;
-  --bg-2: #0b1320;
-  --surface: rgba(18, 28, 44, 0.6);
-  --line: rgba(120, 160, 210, 0.14);
-  --line-strong: rgba(120, 160, 210, 0.28);
-  --text: #e8eef6;
-  --muted: #93a4bd;
-  --faint: #5a6b85;
-  --cyan: #38bdf8;
-  --cyan-deep: #0ea5e9;
-  --cyan-dark: #0284c7;
+  --bg: #060a11;
+  --bg-2: #0a111d;
+  --surface: rgba(16, 26, 42, 0.6);
+  --line: rgba(110, 155, 210, 0.14);
+  --line-strong: rgba(110, 155, 210, 0.30);
+  --text: #e9eef7;
+  --muted: #93a2bd;
+  --faint: #56657f;
+  /* Aligned to the blue SterilVision logo */
+  --cyan: #4a9fe0;
+  --cyan-deep: #2f86cf;
+  --cyan-dark: #1c6cb0;
+  --cyan-rgb: 74, 159, 224;
   --warn: #eab308;
   --danger: #ef4444;
   --ok: #22d39a;
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-display: 'Clash Display', 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -143,8 +145,7 @@ body {
 .emblem-img { position: relative; width: 100%; overflow: hidden; }
 .emblem-img img {
   width: 100%; height: auto; display: block;
-  mix-blend-mode: screen; /* black background → transparent on dark page */
-  filter: drop-shadow(0 0 40px rgba(14, 165, 233, 0.35)) brightness(1.08) contrast(1.05);
+  filter: drop-shadow(0 0 44px rgba(var(--cyan-rgb), 0.42));
   animation: float 6s var(--ease) infinite;
 }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -275,8 +276,10 @@ body {
 }
 .footer .sep { opacity: 0.5; }
 
-/* ── Reveal animation ──────────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(24px); animation: rise 0.9s var(--ease) forwards; }
+/* ── Reveal animation (gated on intro completion) ──────── */
+.reveal { opacity: 1; transform: none; }              /* no-JS fallback: visible */
+.js .reveal { opacity: 0; transform: translateY(26px); }
+.js body.ready .reveal { animation: rise 0.9s var(--ease) forwards; }
 .reveal:nth-child(1) { animation-delay: 0.05s; }
 .kicker.reveal { animation-delay: 0.1s; }
 .emblem.reveal { animation-delay: 0.2s; }
@@ -294,7 +297,94 @@ body {
   .brand-mini { display: none; }
 }
 
+/* ══ INTRO / PRELOADER ═════════════════════════════════ */
+body.preload { overflow: hidden; height: 100vh; }
+#intro { display: none; }
+.js #intro {
+  display: flex; position: fixed; inset: 0; z-index: 1000;
+  align-items: center; justify-content: center; flex-direction: column;
+  background: var(--bg);
+}
+#intro.done { pointer-events: none; }
+
+/* Slat curtain (revealed on finish) */
+.intro-slats { position: absolute; inset: 0; display: flex; z-index: 1; }
+.intro-slats .slat {
+  flex: 1; height: 100%;
+  background: linear-gradient(180deg, #0a111d, #060a11);
+  border-right: 1px solid rgba(110,155,210,0.05);
+  transform: translateY(0);
+  transition: transform 0.9s var(--ease);
+  transition-delay: calc(var(--i) * 80ms);
+}
+#intro.done .slat { transform: translateY(-101%); }
+
+.intro-inner {
+  position: relative; z-index: 2; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+  transition: opacity 0.5s ease, transform 0.6s var(--ease);
+}
+#intro.done .intro-inner { opacity: 0; transform: translateY(-20px); }
+
+.intro-mark { width: min(40vw, 190px); overflow: hidden; }
+.intro-mark img {
+  width: 100%; height: auto; display: block;
+  filter: drop-shadow(0 0 26px rgba(var(--cyan-rgb), 0.4));
+  animation: introPulse 2.4s var(--ease) infinite;
+}
+@keyframes introPulse { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+
+/* Mask-revealed wordmark */
+.intro-reveal { overflow: hidden; }
+.intro-reveal span {
+  display: block; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.8rem, 7vw, 3.4rem); letter-spacing: 0.04em; color: var(--text);
+  transform: translateY(110%); animation: maskUp 1s var(--ease) 0.25s forwards;
+}
+.intro-sub { overflow: hidden; }
+.intro-sub span {
+  display: block; font-size: 0.72rem; letter-spacing: 0.34em; color: var(--cyan);
+  transform: translateY(110%); animation: maskUp 0.9s var(--ease) 0.45s forwards;
+}
+@keyframes maskUp { to { transform: translateY(0); } }
+
+.intro-counter {
+  position: absolute; bottom: clamp(28px, 6vh, 56px); right: clamp(22px, 5vw, 60px);
+  z-index: 2; display: flex; align-items: flex-start; gap: 4px;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(2.4rem, 9vw, 5rem); line-height: 1; color: var(--text);
+}
+.intro-counter i { font-size: 0.32em; color: var(--cyan); margin-top: 0.4em; font-style: normal; }
+.intro-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; z-index: 2; background: rgba(255,255,255,0.05); }
+.intro-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--cyan-deep), var(--cyan)); box-shadow: 0 0 16px var(--cyan); }
+
+/* ══ CUSTOM SCANNER CURSOR (fine pointers only) ════════ */
+.cursor { display: none; }
+@media (pointer: fine) {
+  .js .cursor {
+    display: block; position: fixed; top: 0; left: 0; z-index: 2000;
+    pointer-events: none; transform: translate(-50%, -50%);
+    mix-blend-mode: screen; will-change: transform;
+  }
+  .cursor-ring {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 30px; height: 30px; border: 1px solid rgba(var(--cyan-rgb), 0.8);
+    border-radius: 50%; transition: width 0.25s var(--ease), height 0.25s var(--ease), background 0.25s;
+  }
+  .cursor-cross::before, .cursor-cross::after {
+    content: ''; position: absolute; top: 50%; left: 50%; background: var(--cyan); transform: translate(-50%, -50%);
+  }
+  .cursor-cross::before { width: 1px; height: 10px; }
+  .cursor-cross::after { width: 10px; height: 1px; }
+  .js.cursor-hover .cursor-ring { width: 52px; height: 52px; background: rgba(var(--cyan-rgb), 0.12); }
+  .js body { cursor: none; }
+  .js a, .js button { cursor: none; }
+}
+
+/* ══ REDUCED MOTION ════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .js #intro { display: none; }
+  .intro-reveal span, .intro-sub span { transform: none; }
 }
