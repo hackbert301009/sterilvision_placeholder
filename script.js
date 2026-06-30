@@ -109,3 +109,94 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
   });
 })();
+
+/* ── HMI date + "Wartung seit" uptime ──────────────────── */
+(function dateUptime() {
+  const dateEl = document.getElementById('date');
+  const upEl = document.getElementById('uptime');
+  const pad = (n) => String(n).padStart(2, '0');
+  const start = Date.now();
+  const upd = () => {
+    const d = new Date();
+    if (dateEl) dateEl.textContent = `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`;
+    if (upEl) { const s = Math.floor((Date.now() - start) / 1000); upEl.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`; }
+  };
+  upd(); setInterval(upd, 1000);
+})();
+
+/* ── Register tabs + scrollspy (Bildanwahl) ────────────── */
+(function tabs() {
+  const bar = document.getElementById('hmi-tabs');
+  if (!bar) return;
+  const tabEls = [...bar.querySelectorAll('.tab')];
+  const setActive = (id) => tabEls.forEach((t) => t.classList.toggle('active', t.dataset.target === id));
+  tabEls.forEach((t) => t.addEventListener('click', () => {
+    document.getElementById(t.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+  const ids = tabEls.map((t) => t.dataset.target).filter((id) => document.getElementById(id));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    ids.forEach((id) => io.observe(document.getElementById(id)));
+  }
+  setActive(ids[0]);
+})();
+
+/* ── Meldezeile (cycling alarm/message line) ───────────── */
+(function msgline() {
+  const line = document.getElementById('msgline');
+  if (!line) return;
+  const timeEl = document.getElementById('msg-time'), sevEl = document.getElementById('msg-sev'), txtEl = document.getElementById('msg-text');
+  const msgs = [
+    { sev: 'WARN', info: false, t: 'HMI-Dashboard pausiert · Wartung aktiv' },
+    { sev: 'INFO', info: true, t: 'Vision-Pipeline wird aktualisiert' },
+    { sev: 'INFO', info: true, t: 'Verbindung zu Station 01 aktiv' },
+    { sev: 'INFO', info: true, t: 'Selbsttest erfolgreich abgeschlossen' },
+    { sev: 'WARN', info: false, t: 'Betriebsart WARTUNG · Inspektion gestoppt' },
+  ];
+  const pad = (n) => String(n).padStart(2, '0');
+  let i = 0;
+  const show = () => {
+    const m = msgs[i % msgs.length];
+    txtEl.style.opacity = '0';
+    setTimeout(() => {
+      const d = new Date();
+      timeEl.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+      sevEl.textContent = m.sev; txtEl.textContent = m.t;
+      line.classList.toggle('info', m.info);
+      txtEl.style.opacity = '1';
+    }, 300);
+    i++;
+  };
+  show();
+  if (!reduced) setInterval(show, 4200);
+})();
+
+/* ── Selbsttest bar (looping diagnostic) ───────────────── */
+(function selftest() {
+  const bar = document.getElementById('selftest-bar'), pct = document.getElementById('selftest-pct');
+  if (!bar || !pct) return;
+  if (reduced) { bar.style.width = '100%'; pct.textContent = '100%'; return; }
+  bar.style.transition = 'width 0.2s linear';
+  let v = 0;
+  setInterval(() => {
+    v += Math.random() * 6 + 1.5;
+    if (v >= 100) v = 100;
+    const r = Math.round(v);
+    bar.style.width = r + '%'; pct.textContent = r + '%';
+    if (v >= 100) setTimeout(() => { v = 0; bar.style.width = '0%'; pct.textContent = '0%'; }, 1100);
+  }, 240);
+})();
+
+/* ── Function-key shortcuts (F1–F4) ────────────────────── */
+(function fkeys() {
+  const map = { F1: '#kontakt', F2: 'impressum.html', F3: 'datenschutz.html', F4: 'mailto:albert.heruth@gmail.com' };
+  addEventListener('keydown', (e) => {
+    const target = map[e.key];
+    if (!target) return;
+    e.preventDefault();
+    if (target.startsWith('#')) document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
+    else window.location.href = target;
+  });
+})();

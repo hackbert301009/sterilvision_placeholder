@@ -46,8 +46,10 @@
   <div class="vignette" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
 
-  <!-- ══ HMI PANEL ═══════════════════════════════════════ -->
-  <div class="hmi reveal">
+  <!-- ══ HMI DEVICE ══════════════════════════════════════ -->
+  <div class="device reveal">
+    <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
+    <div class="hmi">
 
     <!-- Status bar -->
     <header class="hmi-bar">
@@ -57,16 +59,34 @@
         <span class="hmi-dim">HMI · STATION&nbsp;01</span>
       </div>
       <div class="hmi-bar-right">
+        <span class="hmi-stat hide-sm"><span class="lbl">Datum</span><span class="val" id="date">--.--.----</span></span>
         <span class="hmi-stat"><span class="lbl">Betriebsart</span><span class="val amber-t">WARTUNG</span></span>
+        <span class="hmi-stat hide-sm"><span class="lbl">Wartung&nbsp;seit</span><span class="val" id="uptime">00:00:00</span></span>
         <span class="hmi-stat"><span class="lbl">Verbindung</span><span class="led green"></span></span>
         <span class="hmi-stat"><span class="lbl">Uhr</span><span class="val" id="clock">--:--:--</span></span>
       </div>
     </header>
 
+    <!-- Register / Bildanwahl -->
+    <nav class="hmi-tabs" id="hmi-tabs" aria-label="Bildanwahl">
+      <button class="tab" data-target="uebersicht">Übersicht</button>
+      <button class="tab" data-target="bauen">Was wir bauen</button>
+      <button class="tab" data-target="wettbewerbe">Wettbewerbe</button>
+      <button class="tab" data-target="kontakt">Kontakt</button>
+    </nav>
+
+    <!-- Meldezeile (alarm/message line) -->
+    <div class="hmi-msgline" id="msgline">
+      <span class="led amber" id="msg-led"></span>
+      <span class="msg-time" id="msg-time">--:--:--</span>
+      <span class="msg-sev" id="msg-sev">WARN</span>
+      <span class="msg-text" id="msg-text">HMI-Dashboard pausiert · Wartung aktiv</span>
+    </div>
+
     <div class="hmi-body">
 
       <!-- MODULE · Startbildschirm -->
-      <section class="module module-hero">
+      <section class="module module-hero" id="uebersicht">
         <div class="module-head"><span class="mh-title">Ansicht · Startbildschirm</span><span class="mh-meta"><span class="led amber"></span> Status: Wartung</span></div>
         <div class="module-body stage">
           <p class="eyebrow reveal">BWKI 2026 &nbsp;·&nbsp; Medical Computer Vision</p>
@@ -82,8 +102,25 @@
         </div>
       </section>
 
-      <!-- MODULE · Was wir bauen -->
+      <!-- MODULE · Systemdiagnose -->
       <section class="module">
+        <div class="module-head"><span class="mh-title">Systemdiagnose</span><span class="mh-meta"><span class="led green"></span> Selbsttest</span></div>
+        <div class="module-body">
+          <div class="diag">
+            <div class="diag-cell"><span class="dc-lbl">Dienste</span><span class="dc-val">3 / 4 aktiv</span></div>
+            <div class="diag-cell"><span class="dc-lbl">Vision-Engine</span><span class="dc-val"><span class="led amber"></span> Standby</span></div>
+            <div class="diag-cell"><span class="dc-lbl">Letzte Kalibrierung</span><span class="dc-val">18.06.2026</span></div>
+            <div class="diag-cell"><span class="dc-lbl">Firmware</span><span class="dc-val">v2.0.4</span></div>
+            <div class="diag-cell diag-bar-cell">
+              <span class="dc-lbl">Selbsttest · <span id="selftest-pct">0%</span></span>
+              <span class="diag-bar"><span id="selftest-bar"></span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE · Was wir bauen -->
+      <section class="module" id="bauen">
         <div class="module-head"><span class="mh-title">Was wir bauen</span><span class="mh-meta">2 Module</span></div>
         <div class="module-body">
           <div class="tiles">
@@ -110,7 +147,7 @@
       </section>
 
       <!-- MODULE · Wettbewerbe -->
-      <section class="module">
+      <section class="module" id="wettbewerbe">
         <div class="module-head"><span class="mh-title">Teilnahme · Wettbewerbe</span><span class="mh-meta"><span class="led amber"></span> Geplant</span></div>
         <div class="module-body">
           <div class="comp-badges">
@@ -167,7 +204,9 @@
       </nav>
       <div class="hmi-foot-meta">© <span id="year">2026</span> STERILVISION · BWKI 2026</div>
     </footer>
-  </div>
+    </div><!-- /.hmi -->
+    <div class="device-plate">SV-HMI · TP1500 COMFORT · 15.0&Prime;</div>
+  </div><!-- /.device -->
 
   <script src="script.js"></script>
 </body>
