@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STERILVISION — Wartungsmodus</title>
+  <meta name="description" content="STERILVISION — KI-gestützte Inspektion steriler Trays in Echtzeit. Unsere Vision-Pipeline wird gerade gewartet. Bald wieder online." />
+  <meta name="theme-color" content="#070b12" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="STERILVISION — Wir kalibrieren gerade" />
+  <meta property="og:description" content="KI-gestützte Inspektion steriler Trays. Unsere Vision-Pipeline ist im Wartungsmodus — bald wieder online." />
+  <meta property="og:image" content="assets/logo.png" />
+  <meta property="og:url" content="https://sterilvision.de" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ── Background layers ───────────────────────────────── -->
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="grid" aria-hidden="true"></div>
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+  <div class="scanbeam" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- ── Top bar ─────────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="brand-mini">
+      <span class="dot"></span>
+      <span class="mono">STERILVISION</span>
+    </div>
+    <div class="status-pill mono">
+      <span class="blink">●</span> SYSTEM IM WARTUNGSMODUS
+    </div>
+  </header>
+
+  <!-- ── Stage ───────────────────────────────────────────── -->
+  <main class="stage">
+    <p class="kicker mono reveal">BWKI 2026 &nbsp;//&nbsp; MEDICAL COMPUTER VISION</p>
+
+    <div class="emblem reveal" id="emblem">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="emblem-img">
+        <img src="assets/logo-emblem.jpg" alt="STERILVISION — Roboter-Inspektion steriler Trays" width="900" height="365" />
+        <span class="scanline"></span>
+      </div>
+    </div>
+
+    <h1 class="wordmark reveal">STERIL<span>VISION</span></h1>
+    <h2 class="headline reveal">Wir kalibrieren gerade.</h2>
+    <p class="lead reveal">
+      Unsere KI-gestützte Vision-Pipeline für die Inspektion steriler Trays wird
+      derzeit gewartet und weiterentwickelt. In Kürze sind wir wieder online.
+    </p>
+
+    <!-- Telemetry / boot console -->
+    <div class="console reveal" role="status" aria-live="polite">
+      <div class="console-head mono">
+        <span class="d r"></span><span class="d y"></span><span class="d g"></span>
+        <span class="console-title">sterilvision@core:~/maintenance</span>
+      </div>
+      <pre id="console-body" class="mono"></pre>
+      <div class="progress"><span id="progress-bar"></span></div>
+    </div>
+
+    <!-- Contact / socials -->
+    <section class="contact reveal">
+      <p class="contact-label mono">// Bei Anliegen erreichst du uns hier</p>
+      <div class="links" id="social-links"><!-- injected by script.js --></div>
+    </section>
+  </main>
+
+  <!-- ── Product teaser ──────────────────────────────────── -->
+  <section class="teaser reveal" aria-label="Vorschau">
+    <div class="teaser-head mono">// COMING SOON — VISION PIPELINE</div>
+    <div class="teaser-grid">
+      <figure class="t-card"><img src="assets/dashboard.webp" alt="HMI Dashboard" loading="lazy" /><figcaption class="mono">HMI Dashboard</figcaption></figure>
+      <figure class="t-card"><img src="assets/heatmap.webp" alt="Anomalie-Heatmap" loading="lazy" /><figcaption class="mono">Anomalie-Heatmap</figcaption></figure>
+      <figure class="t-card"><img src="assets/instrument.jpg" alt="Instrumenten-Inspektion" loading="lazy" /><figcaption class="mono">Instrumenten-Scan</figcaption></figure>
+    </div>
+  </section>
+
+  <footer class="footer mono">
+    <span>© <span id="year">2026</span> STERILVISION</span>
+    <span class="sep">·</span>
+    <span>Medical Computer Vision</span>
+    <span class="sep">·</span>
+    <span>BWKI 2026</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
