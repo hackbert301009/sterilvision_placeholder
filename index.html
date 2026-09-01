@@ -3,236 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STERILVISION — HMI · Wartungsmodus</title>
-  <meta name="description" content="STERILVISION — KI-gestützte Inspektion steriler Trays. Eigene quelloffene Plattform, Defekterkennung in Echtzeit. Aktuell im Wartungsmodus." />
-  <meta name="theme-color" content="#0f1a28" />
+  <title>SterilVision — KI-gestützte Prüfung steriler Instrumente</title>
+  <meta name="description" content="SterilVision entwickelt KI-gestützte Bilderkennung zur automatisierten Prüfung steriler OP-Instrumente – für mehr Sicherheit in der Sterilgutversorgung." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sterilvision.de/" />
+  <meta name="theme-color" content="#0e1620" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="STERILVISION — Wir kalibrieren gerade" />
-  <meta property="og:description" content="KI-gestützte Inspektion steriler Trays — eigene quelloffene Software, Defekterkennung in Echtzeit. Aktuell im Wartungsmodus." />
-  <meta property="og:image" content="assets/logo-share.jpg" />
-  <meta property="og:url" content="https://sterilvision.de" />
-
-  <script>document.documentElement.classList.add('js');</script>
+  <meta property="og:site_name" content="SterilVision" />
+  <meta property="og:title" content="SterilVision — KI-gestützte Prüfung steriler Instrumente" />
+  <meta property="og:description" content="Automatisierte Bilderkennung für die Sterilgutversorgung: Beschädigungen, Rückstände und Vollständigkeit in Echtzeit erkennen." />
+  <meta property="og:image" content="https://sterilvision.de/assets/logo-share.jpg" />
+  <meta property="og:url" content="https://sterilvision.de/" />
+  <meta property="og:locale" content="de_DE" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SterilVision",
+    "url": "https://sterilvision.de/",
+    "logo": "https://sterilvision.de/assets/logo-mark.png",
+    "description": "SterilVision entwickelt KI-gestützte Bilderkennung zur automatisierten Prüfung steriler OP-Instrumente auf Beschädigungen, Rückstände und Vollständigkeit.",
+    "founder": [
+      { "@type": "Person", "name": "Albert Heruth" },
+      { "@type": "Person", "name": "Jakob Rudolph" }
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/albert-heruth-37aa74379/",
+      "https://github.com/hackbert301009"
+    ]
+  }
+  </script>
 </head>
-<body class="preload">
+<body class="no-js" id="top">
+  <script>document.body.classList.remove('no-js');</script>
 
-  <!-- ── Intro / Preloader ───────────────────────────────── -->
-  <div id="intro" aria-hidden="true">
-    <div class="intro-slats" id="intro-slats"></div>
-    <div class="intro-inner">
-      <div class="intro-mark"><img src="assets/logo-mark.png" alt="" width="520" height="205" /></div>
-      <div class="intro-reveal"><span>STERILVISION</span></div>
-      <div class="intro-sub"><span>HMI · SYSTEM LOADING</span></div>
-    </div>
-    <div class="intro-counter"><span id="counter">00</span><i>%</i></div>
-    <div class="intro-bar"><span id="intro-bar-fill"></span></div>
-  </div>
-
-  <!-- ── Backdrop ────────────────────────────────────────── -->
-  <div class="bg" aria-hidden="true">
+    <div class="bg" aria-hidden="true">
     <div class="bg-grad"></div>
-    <div class="bg-grid"></div>
-    <div class="bg-sheen"></div>
+    <div class="bg-pattern"></div>
+    <img class="bg-mark" src="assets/logo-emblem.png" alt="" loading="lazy" />
+    <svg class="bg-icon tray" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="46" height="30" rx="4"/><path d="M1 11h46M1 21h46M13 1v30M25 1v30M37 1v30" stroke-opacity="0.6"/></svg>
+    <svg class="bg-icon scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 8.5 19 19M8.5 15.5 19 5" stroke-linecap="round"/></svg>
   </div>
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
 
-  <!-- ══ HMI DEVICE ══════════════════════════════════════ -->
-  <div class="device reveal">
-    <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
-    <div class="hmi">
-
-    <!-- Status bar -->
-    <header class="hmi-bar">
-      <div class="hmi-bar-left">
-        <span class="led amber"></span>
-        <span class="hmi-id">STERILVISION</span>
-        <span class="hmi-dim">HMI · STATION&nbsp;01</span>
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#top">
+      <img src="assets/logo-mark.png" alt="" width="140" height="55" />
+      <span>SterilVision</span>
+    </a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <div class="nav-links">
+        <a href="#produkt">Produkt</a>
+        <a href="#team">Team</a>
+        <a href="#wettbewerbe">Wettbewerbe</a>
       </div>
-      <div class="hmi-bar-right">
-        <span class="hmi-stat hide-sm"><span class="lbl">Datum</span><span class="val" id="date">--.--.----</span></span>
-        <span class="hmi-stat"><span class="lbl">Betriebsart</span><span class="val amber-t">WARTUNG</span></span>
-        <span class="hmi-stat hide-sm"><span class="lbl">Wartung&nbsp;seit</span><span class="val" id="uptime">00:00:00</span></span>
-        <span class="hmi-stat"><span class="lbl">Verbindung</span><span class="led green"></span></span>
-        <span class="hmi-stat"><span class="lbl">Uhr</span><span class="val" id="clock">--:--:--</span></span>
-      </div>
-    </header>
-
-    <!-- Register / Bildanwahl -->
-    <nav class="hmi-tabs" id="hmi-tabs" aria-label="Bildanwahl">
-      <button class="tab" data-target="uebersicht">Übersicht</button>
-      <button class="tab" data-target="bauen">Was wir bauen</button>
-      <button class="tab" data-target="wettbewerbe">Wettbewerbe</button>
-      <button class="tab" data-target="kontakt">Kontakt</button>
+      <a class="btn btn-primary" href="kontakt.html">Kontakt</a>
     </nav>
+  </header>
 
-    <!-- Meldezeile (alarm/message line) -->
-    <div class="hmi-msgline" id="msgline">
-      <span class="led amber" id="msg-led"></span>
-      <span class="msg-time" id="msg-time">--:--:--</span>
-      <span class="msg-sev" id="msg-sev">WARN</span>
-      <span class="msg-text" id="msg-text">HMI-Dashboard pausiert · Wartung aktiv</span>
-    </div>
-
-    <div class="hmi-body">
-
-      <!-- MODULE · Startbildschirm -->
-      <section class="module module-hero" id="uebersicht">
-        <div class="module-head"><span class="mh-title">Ansicht · Startbildschirm</span><span class="mh-meta"><span class="led amber"></span> Status: Wartung</span></div>
-        <div class="module-body stage">
-          <p class="eyebrow reveal">BWKI 2026 &nbsp;·&nbsp; Medical Computer Vision</p>
-          <div class="emblem reveal">
-            <div class="emblem-glow"></div>
-            <div class="emblem-img"><img src="assets/logo-emblem.png" alt="STERILVISION — Roboter-Inspektion steriler Trays" width="847" height="464" /></div>
-          </div>
-          <h1 class="headline reveal">Wir kalibrieren gerade.</h1>
-          <p class="lead reveal">
-            Unsere Vision-Pipeline zur Inspektion steriler Trays wird gewartet und
-            weiterentwickelt. Wir sind in Kürze wieder online.
-          </p>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow reveal">BWKI 2026 · Medical Computer Vision</p>
+        <h1 class="reveal">Der zweite Blick für Ihre Sterilgutversorgung.</h1>
+        <p class="lead reveal">
+          SterilVision prüft sterile Instrumente automatisiert per Kamera und KI –
+          auf Beschädigungen, Rückstände und Vollständigkeit. Wir bereiten gerade den Start vor.
+        </p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-primary" href="kontakt.html">Kontakt aufnehmen</a>
+          <a class="btn btn-ghost" href="#ablauf">So funktioniert's</a>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- MODULE · Team & Kontakt -->
-      <section class="module" id="team">
-        <div class="module-head"><span class="mh-title">Team · Gründer &amp; Kontakt</span><span class="mh-meta">2 Personen · 3 Kanäle</span></div>
-        <div class="module-body">
-          <div class="tk-grid">
-            <!-- Left: founder boxes -->
-            <div class="tk-team">
-              <article class="member reveal">
-                <div class="member-photo"><img src="assets/team-albert.jpg" alt="Albert Heruth" loading="lazy" /></div>
-                <div class="member-info">
-                  <span class="member-role">Gründer · KI-Experte</span>
-                  <h3 class="member-name">Albert Heruth</h3>
-                </div>
-              </article>
-              <article class="member reveal">
-                <div class="member-photo"><img src="assets/team-jakob.jpg" alt="Jakob Rudolph" loading="lazy" /></div>
-                <div class="member-info">
-                  <span class="member-role">Mitgründer · Programmierer</span>
-                  <h3 class="member-name">Jakob Rudolph</h3>
-                </div>
-              </article>
+    <!-- Produkt -->
+    <section id="produkt">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Was wir bauen</span>
+          <h2>Eine Plattform für die Sterilgutversorgung</h2>
+        </div>
+        <div class="showcase">
+          <div class="showcase-row reverse reveal">
+            <div class="showcase-media brand"><img src="assets/logo-emblem.png" alt="SterilVision" loading="lazy" width="847" height="464" /></div>
+            <div class="showcase-text">
+              <span class="eyebrow-sm">01</span>
+              <h3>Für den ganzen Prozess</h3>
+              <p>Vom Dashboard bis zur mobilen Inspektion – SterilVision begleitet die Prüfung von der Aufnahme bis zur Freigabe.</p>
             </div>
-            <!-- Right: social boxes -->
-            <div class="tk-social">
-              <a class="sbox reveal" href="mailto:albert.heruth@gmail.com">
-                <span class="sbox-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6" stroke-linecap="round"/></svg></span>
-                <span class="sbox-main"><span class="sbox-label">E-Mail</span><span class="sbox-handle">albert.heruth@gmail.com</span></span>
-                <span class="sbox-arrow">→</span>
-              </a>
-              <a class="sbox reveal" href="https://www.linkedin.com/in/albert-heruth-37aa74379/" target="_blank" rel="noopener">
-                <span class="sbox-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.3-.02-2.96-1.8-2.96-1.8 0-2.08 1.4-2.08 2.86V21h-4z"/></svg></span>
-                <span class="sbox-main"><span class="sbox-label">LinkedIn</span><span class="sbox-handle">Albert Heruth</span></span>
-                <span class="sbox-arrow">↗</span>
-              </a>
-              <a class="sbox reveal" href="https://github.com/hackbert301009" target="_blank" rel="noopener">
-                <span class="sbox-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.22-3.37-1.22-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.81-4.58 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg></span>
-                <span class="sbox-main"><span class="sbox-label">GitHub</span><span class="sbox-handle">@hackbert301009</span></span>
-                <span class="sbox-arrow">↗</span>
-              </a>
+            <img class="showcase-wm" src="assets/logo-mark.png" alt="" aria-hidden="true" loading="lazy" />
+          </div>
+          <div class="showcase-row reveal">
+            <div class="showcase-media"><img src="assets/auswertung.jpg" alt="KI-Auswertung mit Defekterkennung an einem chirurgischen Instrument" loading="lazy" width="800" height="500" /></div>
+            <div class="showcase-text">
+              <span class="eyebrow-sm">02</span>
+              <h3>Defekte erkennen, bevor sie zum Risiko werden</h3>
+              <p>Unsere KI erkennt Beschädigungen, Rückstände und fehlende Teile in Echtzeit – mit nachvollziehbaren Heatmaps und klarem i.O./N.i.O.-Urteil.</p>
             </div>
+            <img class="showcase-wm" src="assets/logo-mark.png" alt="" aria-hidden="true" loading="lazy" />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- MODULE · Was wir bauen -->
-      <section class="module" id="bauen">
-        <div class="module-head"><span class="mh-title">Was wir bauen</span><span class="mh-meta">2 Module</span></div>
-        <div class="module-body">
-          <div class="tiles">
-            <article class="tile reveal">
-              <div class="tile-media"><img src="assets/platform-preview.jpg" alt="SterilVision Plattform — Desktop & Mobile" loading="lazy" /></div>
-              <div class="tile-body">
-                <div class="tile-top"><span class="tile-num">01</span><span class="tile-eyebrow">Open Source</span></div>
-                <h2 class="tile-title">Eigene Plattform</h2>
-                <p class="tile-text">Wir entwickeln unsere Software eigenständig und quelloffen – vom Desktop-Dashboard bis zur mobilen Inspektion. Volle Transparenz, kein Black-Box-System.</p>
-                <ul class="tile-tags"><li>Desktop-Dashboard</li><li>Mobile Inspektion</li><li>Quelloffen</li></ul>
-              </div>
-            </article>
-            <article class="tile reveal">
-              <div class="tile-media"><img src="assets/auswertung.jpg" alt="KI-Auswertung — Defekterkennung an Instrumenten" loading="lazy" /></div>
-              <div class="tile-body">
-                <div class="tile-top"><span class="tile-num">02</span><span class="tile-eyebrow">Auswertung</span></div>
-                <h2 class="tile-title">Defekte erkennen</h2>
-                <p class="tile-text">Unsere KI erkennt Defekte am Instrument in Echtzeit – Oberflächenschäden, Rückstände, Vollständigkeit. Erklärbare Heatmaps und ein klares i.O./N.i.O.-Urteil.</p>
-                <ul class="tile-tags"><li>Oberflächenschäden</li><li>Rückstände</li><li>Vollständigkeit</li></ul>
-              </div>
-            </article>
+    <!-- So funktioniert's -->
+    <section id="ablauf">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">So funktioniert's</span>
+          <h2>In drei Schritten zur Freigabe</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8a2 2 0 0 1 2-2h1l1-2h8l1 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.2"/></svg></div>
+            <h3>Aufnehmen</h3>
+            <p>Das Instrument wird während der Aufbereitung automatisch per Kamera erfasst.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke-linecap="round"/><circle cx="12" cy="12" r="5.5"/></svg></div>
+            <h3>Analysieren</h3>
+            <p>Unsere KI prüft Beschädigungen, Rückstände und Vollständigkeit in Echtzeit.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Freigeben</h3>
+            <p>Ein klares i.O./N.i.O.-Urteil mit nachvollziehbarer Heatmap-Begründung.</p>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- MODULE · Wettbewerbe -->
-      <section class="module" id="wettbewerbe">
-        <div class="module-head"><span class="mh-title">Teilnahme · Wettbewerbe</span><span class="mh-meta"><span class="led amber"></span> Geplant</span></div>
-        <div class="module-body">
-          <div class="comp-badges">
-            <a class="comp reveal" href="https://www.medica.de/" target="_blank" rel="noopener">
-              <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v6m0 0a4 4 0 0 0 4-4H8a4 4 0 0 0 4 4Zm-5 9h10l-1 8H8l-1-8Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="comp-txt"><span class="comp-name">MEDICA Startup Competition</span><span class="comp-meta">Teilnahme geplant</span></span>
-              <span class="comp-ext">↗</span>
-            </a>
-            <a class="comp reveal" href="https://www.bw-ki.de/" target="_blank" rel="noopener">
-              <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="9" r="6"/><path d="m9 14-2 7 5-3 5 3-2-7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="comp-txt"><span class="comp-name">Bundeswettbewerb KI (BWKI)</span><span class="comp-meta">2026 · dabei</span></span>
-              <span class="comp-ext">↗</span>
-            </a>
-            <a class="comp reveal" href="https://www.jugend-forscht.de/" target="_blank" rel="noopener">
-              <span class="comp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="comp-txt"><span class="comp-name">Jugend forscht</span><span class="comp-meta">Teilnahme geplant</span></span>
-              <span class="comp-ext">↗</span>
-            </a>
+    <!-- Team -->
+    <section id="team">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Team</span>
+          <h2>Gegründet von</h2>
+        </div>
+        <div class="showcase">
+          <div class="showcase-row reverse reveal">
+            <div class="showcase-media portrait"><img src="assets/team-albert.jpg" alt="Albert Heruth" loading="lazy" width="256" height="256" /></div>
+            <div class="showcase-text">
+              <span class="eyebrow-sm">Gründer · KI</span>
+              <h3>Albert Heruth</h3>
+              <p>Verantwortet die Computer-Vision-Modelle und die Produktvision von SterilVision.</p>
+            </div>
+            <img class="showcase-wm" src="assets/logo-mark.png" alt="" aria-hidden="true" loading="lazy" />
+          </div>
+          <div class="showcase-row reveal">
+            <div class="showcase-media portrait"><img src="assets/team-jakob.jpg" alt="Jakob Rudolph" loading="lazy" width="256" height="256" /></div>
+            <div class="showcase-text">
+              <span class="eyebrow-sm">Mitgründer · Software</span>
+              <h3>Jakob Rudolph</h3>
+              <p>Baut die Plattform – vom Backend bis zur mobilen Inspektion.</p>
+            </div>
+            <img class="showcase-wm" src="assets/logo-mark.png" alt="" aria-hidden="true" loading="lazy" />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- MODULE · Serviceanfrage / Kontakt -->
-      <section class="module" id="kontakt">
-        <div class="module-head"><span class="mh-title">Serviceanfrage · Kontakt</span><span class="mh-meta"><span class="led green"></span> Online</span></div>
-        <div class="module-body kontakt">
-          <p class="k-sub">Anfragen, Kooperationen oder Fragen zum System? Schreib uns – wir melden uns.</p>
-          <form id="contact-form" class="form" action="https://formspree.io/f/xaqgdkwa" method="POST">
-            <div class="row">
-              <div class="field"><label for="f-name">Name</label><input id="f-name" type="text" name="name" required autocomplete="name" /></div>
-              <div class="field"><label for="f-mail">E-Mail</label><input id="f-mail" type="email" name="email" required autocomplete="email" /></div>
-            </div>
-            <div class="field"><label for="f-msg">Nachricht</label><textarea id="f-msg" name="message" rows="5" required></textarea></div>
-            <div class="form-actions">
-              <button type="submit" class="btn-submit" id="submit-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4 20-7Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Nachricht senden
-              </button>
-              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-            </div>
-          </form>
+    <!-- Wettbewerbe -->
+    <section id="wettbewerbe">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Dabei bei</span>
+          <h2>Wettbewerbe &amp; Förderung</h2>
         </div>
-      </section>
-    </div>
+        <div class="trust-row reveal">
+          <a class="trust-item" href="https://www.medica.de/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v6m0 0a4 4 0 0 0 4-4H8a4 4 0 0 0 4 4Zm-5 9h10l-1 8H8l-1-8Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            MEDICA Startup Competition
+          </a>
+          <a class="trust-item" href="https://www.bw-ki.de/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="9" r="6"/><path d="m9 14-2 7 5-3 5 3-2-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Bundeswettbewerb KI (BWKI) 2026
+          </a>
+          <a class="trust-item" href="https://www.jugend-forscht.de/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Jugend forscht
+          </a>
+        </div>
+      </div>
+    </section>
 
-    <!-- Function-key strip -->
-    <footer class="hmi-foot">
-      <nav class="fkeys">
-        <a class="fkey" href="#kontakt"><span class="fk">F1</span> Kontakt</a>
-        <a class="fkey" href="impressum.html"><span class="fk">F2</span> Impressum</a>
-        <a class="fkey" href="datenschutz.html"><span class="fk">F3</span> Datenschutz</a>
-        <a class="fkey" href="mailto:albert.heruth@gmail.com"><span class="fk">F4</span> E-Mail</a>
+    <!-- Kontakt-Teaser -->
+    <section id="kontakt-teaser">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Kontakt</span>
+          <h2>Sprechen wir.</h2>
+          <p>Fragen, Kooperationen oder Interesse an SterilVision? Wir freuen uns auf Ihre Nachricht.</p>
+          <a class="btn btn-primary" href="kontakt.html" style="margin-top:22px">Zum Kontakt</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div class="footer-brand">© <span id="year">2026</span> SterilVision · Albert Heruth</div>
+      <nav class="footer-links" aria-label="Rechtliches">
+        <a href="kontakt.html">Kontakt</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
       </nav>
-      <div class="hmi-foot-meta">© <span id="year">2026</span> STERILVISION · BWKI 2026</div>
-    </footer>
-    </div><!-- /.hmi -->
-    <div class="device-plate">SV-HMI · TP1500 COMFORT · 15.0&Prime;</div>
-  </div><!-- /.device -->
+      <div class="footer-social" id="social-links"></div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

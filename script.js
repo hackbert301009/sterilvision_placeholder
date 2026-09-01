@@ -1,12 +1,12 @@
 /* ───────────────────────────────────────────────────────────
-   STERILVISION — Wartungsseite · Intro & Kontakt
+   STERILVISION — script.js
    ─────────────────────────────────────────────────────────── */
 
 /* ============================================================
    KONTAKT / SOCIAL LINKS  —  HIER ANPASSEN
    ============================================================ */
 const SOCIALS = [
-  { label: 'E-Mail',   url: 'mailto:albert.heruth@gmail.com', icon: 'mail', primary: true },
+  { label: 'E-Mail',   url: 'mailto:albert.heruth@gmail.com', icon: 'mail' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/albert-heruth-37aa74379/', icon: 'linkedin' },
   { label: 'GitHub',   url: 'https://github.com/hackbert301009', icon: 'github' },
 ];
@@ -22,63 +22,36 @@ const ICONS = {
   if (!wrap) return;
   wrap.innerHTML = SOCIALS.map((s) => {
     const ext = s.url.startsWith('http') ? ' target="_blank" rel="noopener"' : '';
-    return `<a href="${s.url}"${ext} class="${s.primary ? 'primary' : ''}">${ICONS[s.icon] || ''}<span>${s.label}</span></a>`;
+    return `<a href="${s.url}"${ext} aria-label="${s.label}">${ICONS[s.icon] || ''}<span class="sr-only">${s.label}</span></a>`;
   }).join('');
 })();
 
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const body = document.body;
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ── Intro / Preloader ─────────────────────────────────── */
-(function intro() {
-  const el = document.getElementById('intro');
-  const finish = () => { body.classList.remove('preload'); body.classList.add('ready'); };
-
-  if (reduced || !el) { finish(); if (el) el.style.display = 'none'; return; }
-
-  const slats = document.getElementById('intro-slats');
-  const N = window.innerWidth < 700 ? 4 : 7;
-  for (let i = 0; i < N; i++) {
-    const s = document.createElement('div');
-    s.className = 'slat'; s.style.setProperty('--i', i);
-    slats.appendChild(s);
-  }
-
-  const counterEl = document.getElementById('counter');
-  const barEl = document.getElementById('intro-bar-fill');
-  const dur = 2200;
-  let startT = null;
-  const closeIntro = () => {
-    el.classList.add('done');
-    finish();
-    setTimeout(() => { el.style.display = 'none'; }, 900 + N * 80 + 120);
-  };
-  const tick = (now) => {
-    if (startT === null) startT = now;
-    const t = Math.min((now - startT) / dur, 1);
-    const eased = 1 - Math.pow(1 - t, 3);
-    const val = Math.round(eased * 100);
-    counterEl.textContent = String(val).padStart(2, '0');
-    barEl.style.width = val + '%';
-    if (t < 1) requestAnimationFrame(tick);
-    else setTimeout(closeIntro, 320);
-  };
-  requestAnimationFrame(tick);
-
-  // Safety: never trap the user behind the intro
-  setTimeout(() => { if (!body.classList.contains('ready')) closeIntro(); }, 6000);
+/* ── Header: subtle border once the page is scrolled ───── */
+(function headerScroll() {
+  const header = document.getElementById('site-header');
+  if (!header) return;
+  const upd = () => header.classList.toggle('scrolled', window.scrollY > 8);
+  upd();
+  addEventListener('scroll', upd, { passive: true });
 })();
 
-/* ── HMI clock ─────────────────────────────────────────── */
-(function clock() {
-  const el = document.getElementById('clock');
-  if (!el) return;
-  const pad = (n) => String(n).padStart(2, '0');
-  const upd = () => { const d = new Date(); el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; };
-  upd(); setInterval(upd, 1000);
+/* ── Reveal on scroll ───────────────────────────────────── */
+(function reveal() {
+  const els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    els.forEach((el) => el.classList.add('in-view'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  els.forEach((el) => io.observe(el));
 })();
 
 /* ── Contact form → Formspree (AJAX, no redirect) ──────── */
@@ -107,96 +80,5 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     } finally {
       btn.disabled = false;
     }
-  });
-})();
-
-/* ── HMI date + "Wartung seit" uptime ──────────────────── */
-(function dateUptime() {
-  const dateEl = document.getElementById('date');
-  const upEl = document.getElementById('uptime');
-  const pad = (n) => String(n).padStart(2, '0');
-  const start = Date.now();
-  const upd = () => {
-    const d = new Date();
-    if (dateEl) dateEl.textContent = `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`;
-    if (upEl) { const s = Math.floor((Date.now() - start) / 1000); upEl.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`; }
-  };
-  upd(); setInterval(upd, 1000);
-})();
-
-/* ── Register tabs + scrollspy (Bildanwahl) ────────────── */
-(function tabs() {
-  const bar = document.getElementById('hmi-tabs');
-  if (!bar) return;
-  const tabEls = [...bar.querySelectorAll('.tab')];
-  const setActive = (id) => tabEls.forEach((t) => t.classList.toggle('active', t.dataset.target === id));
-  tabEls.forEach((t) => t.addEventListener('click', () => {
-    document.getElementById(t.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }));
-  const ids = tabEls.map((t) => t.dataset.target).filter((id) => document.getElementById(id));
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    ids.forEach((id) => io.observe(document.getElementById(id)));
-  }
-  setActive(ids[0]);
-})();
-
-/* ── Meldezeile (cycling alarm/message line) ───────────── */
-(function msgline() {
-  const line = document.getElementById('msgline');
-  if (!line) return;
-  const timeEl = document.getElementById('msg-time'), sevEl = document.getElementById('msg-sev'), txtEl = document.getElementById('msg-text');
-  const msgs = [
-    { sev: 'WARN', info: false, t: 'HMI-Dashboard pausiert · Wartung aktiv' },
-    { sev: 'INFO', info: true, t: 'Vision-Pipeline wird aktualisiert' },
-    { sev: 'INFO', info: true, t: 'Verbindung zu Station 01 aktiv' },
-    { sev: 'INFO', info: true, t: 'Selbsttest erfolgreich abgeschlossen' },
-    { sev: 'WARN', info: false, t: 'Betriebsart WARTUNG · Inspektion gestoppt' },
-  ];
-  const pad = (n) => String(n).padStart(2, '0');
-  let i = 0;
-  const show = () => {
-    const m = msgs[i % msgs.length];
-    txtEl.style.opacity = '0';
-    setTimeout(() => {
-      const d = new Date();
-      timeEl.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-      sevEl.textContent = m.sev; txtEl.textContent = m.t;
-      line.classList.toggle('info', m.info);
-      txtEl.style.opacity = '1';
-    }, 300);
-    i++;
-  };
-  show();
-  if (!reduced) setInterval(show, 4200);
-})();
-
-/* ── Selbsttest bar (looping diagnostic) ───────────────── */
-(function selftest() {
-  const bar = document.getElementById('selftest-bar'), pct = document.getElementById('selftest-pct');
-  if (!bar || !pct) return;
-  if (reduced) { bar.style.width = '100%'; pct.textContent = '100%'; return; }
-  bar.style.transition = 'width 0.2s linear';
-  let v = 0;
-  setInterval(() => {
-    v += Math.random() * 6 + 1.5;
-    if (v >= 100) v = 100;
-    const r = Math.round(v);
-    bar.style.width = r + '%'; pct.textContent = r + '%';
-    if (v >= 100) setTimeout(() => { v = 0; bar.style.width = '0%'; pct.textContent = '0%'; }, 1100);
-  }, 240);
-})();
-
-/* ── Function-key shortcuts (F1–F4) ────────────────────── */
-(function fkeys() {
-  const map = { F1: '#kontakt', F2: 'impressum.html', F3: 'datenschutz.html', F4: 'mailto:albert.heruth@gmail.com' };
-  addEventListener('keydown', (e) => {
-    const target = map[e.key];
-    if (!target) return;
-    e.preventDefault();
-    if (target.startsWith('#')) document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
-    else window.location.href = target;
   });
 })();
