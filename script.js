@@ -66,16 +66,20 @@ $$('a[href^="#"]').forEach((a) => {
 (() => {
   const h = $('#site-header');
   if (!h) return;
-  let last = 0;
+  let last = 0, ticking = false, sc = null, hid = null;
   const upd = () => {
+    ticking = false;
     const y = scrollY;
-    h.classList.toggle('scrolled', y > 10);
-    h.classList.toggle('hidden', y > 600 && y > last + 4 && !document.body.classList.contains('menu-open'));
-    if (y < last - 4) h.classList.remove('hidden');
+    const s = y > 10;
+    let hd = hid;
+    if (y > 600 && y > last + 4 && !document.body.classList.contains('menu-open')) hd = true;
+    else if (y < last - 4 || y <= 600) hd = false;
+    if (s !== sc) { sc = s; h.classList.toggle('scrolled', s); }
+    if (hd !== hid) { hid = hd; h.classList.toggle('hidden', hd); }
     last = y;
   };
   upd();
-  addEventListener('scroll', upd, { passive: true });
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
 })();
 
 /* ── Mobiles Menü ───────────────────────────────────────── */
@@ -110,23 +114,21 @@ if (menuBtn) {
 function initGsap() {
   if (!hasGsap() || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
+  // Mobile Adressleiste löst kein Neuberechnen aller Trigger aus
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   // Hero-Headline Zeile für Zeile, Wort für Wort
   const h1 = $('[data-split]');
   if (h1 && window.SplitText) {
     gsap.registerPlugin(SplitText);
     const split = new SplitText(h1, { type: 'words,lines', linesClass: 'line', mask: 'lines' });
-    gsap.from(split.words, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.06, delay: 0.2 });
+    // Nach der Intro wieder echter Text, damit die Zeilen bei Größenänderung sauber umbrechen
+    gsap.from(split.words, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.06, delay: 0.2, onComplete: () => split.revert() });
   }
   gsap.from('[data-hero]', { y: 24, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1, delay: 0.55 });
 
   // Hero-Text beim Scrollen leicht nach oben und ausblenden
   gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-
-  // Hintergrund-Instrumente wandern leicht gegen die Scrollrichtung
-  $$('.bg-tool').forEach((el, i) => {
-    gsap.to(el, { y: -(80 + (i % 3) * 70), ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: true } });
-  });
 
   // Finale-Karten: Licht folgt der Maus
   $$('.finale-card').forEach((c) => c.addEventListener('pointermove', (e) => {
@@ -138,6 +140,13 @@ function initGsap() {
   addEventListener('load', () => ScrollTrigger.refresh());
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initGsap); else initGsap();
+
+/* ── Logo-Band nur animieren, wenn es zu sehen ist ──────── */
+(() => {
+  const m = $('.marquee');
+  if (!m || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(([e]) => m.classList.toggle('paused', !e.isIntersecting)).observe(m);
+})();
 
 /* ── Videos: Loops erst laden, wenn sichtbar ────────────── */
 (() => {

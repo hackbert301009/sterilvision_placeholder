@@ -14,7 +14,11 @@ function webglOk() {
   catch { return false; }
 }
 
-if (host && webglOk()) {
+// Sehr schwache Geräte oder Datensparmodus: statische Bildmarke statt 3D
+const conn = navigator.connection || {};
+const lowEnd = conn.saveData || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+
+if (host && webglOk() && !lowEnd) {
   // Erst nach dem ersten Paint laden, damit Text und Layout sofort stehen
   const start = () => import('../../vendor/three.module.min.js').then(init).catch(() => {});
   if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 600 }); else setTimeout(start, 120);
@@ -67,8 +71,9 @@ function sampleScissors(count) {
 
 function init(THREE) {
   const mobile = innerWidth < 760;
-  const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 1.75));
+  const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'default' });
+  let pr = Math.min(devicePixelRatio, mobile ? 1.25 : 1.5);
+  renderer.setPixelRatio(pr);
   host.appendChild(renderer.domElement);
   document.documentElement.classList.add('webgl');
 
@@ -82,7 +87,7 @@ function init(THREE) {
   tool.rotation.set(-0.42, 0.28, 0.32);
 
   /* Partikel der Schere */
-  const P = sampleScissors(mobile ? 9000 : 18000);
+  const P = sampleScissors(mobile ? 6500 : 13000);
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(P.pos, 3));
   geo.setAttribute('aRandom', new THREE.BufferAttribute(P.rnd, 3));
@@ -157,7 +162,10 @@ function init(THREE) {
   /* Layout: Desktop rechts oben neben dem Text, Mobil oben mittig */
   let W = 0, H = 0;
   function resize() {
-    W = host.clientWidth; H = host.clientHeight;
+    const nw = host.clientWidth, nh = host.clientHeight;
+    // Mobile Adressleiste: kleine Höhenänderungen ignorieren, Canvas nicht neu anlegen
+    if (nw === W && Math.abs(nh - H) < 120) return;
+    W = nw; H = nh;
     renderer.setSize(W, H, false);
     camera.aspect = W / H; camera.updateProjectionMatrix();
     const narrow = W < 860;
@@ -168,7 +176,7 @@ function init(THREE) {
     rig.position.set(narrow ? 0 : visW * 0.27, narrow ? 1.5 : visH * 0.16, 0);
   }
   resize();
-  addEventListener('resize', resize);
+  let rT; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(resize, 150); });
 
   /* Maus und Gyro-freie Parallaxe */
   const target = { x: 0, y: 0 }, cur = { x: 0, y: 0 };
@@ -177,20 +185,38 @@ function init(THREE) {
   /* Scroll: Partikel lösen sich beim Verlassen des Heros */
   let scrollP = 0;
   const hero = document.getElementById('hero');
-  const onScroll = () => { const r = hero.getBoundingClientRect(); scrollP = Math.min(1, Math.max(0, -r.top / (r.height * 0.9))); };
+  let heroH = hero.offsetHeight;
+  addEventListener('resize', () => { heroH = hero.offsetHeight; });
+  const onScroll = () => { scrollP = Math.min(1, Math.max(0, scrollY / (heroH * 0.9))); };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   /* Nur rendern, wenn sichtbar */
-  let visible = true;
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(hero);
+  let visible = true, raf = 0;
+  const wake = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame); };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; wake(); }).observe(hero);
+  document.addEventListener('visibilitychange', wake);
+
+  /* Adaptive Qualität: misst die ersten Sekunden und senkt bei Bedarf Auflösung und Partikel */
+  let fN = 0, fSum = 0, fLast = 0, tuned = false;
 
   const v3 = new THREE.Vector3();
   const CYCLE = 6.5;          // Sekunden pro Scan
   const t0 = performance.now();
 
-  function frame() {
-    requestAnimationFrame(frame);
-    if (!visible || document.hidden) return;
+  function frame(now) {
+    raf = 0;
+    if (!visible || document.hidden) return;   // Schleife ruht, bis die Szene wieder sichtbar ist
+    raf = requestAnimationFrame(frame);
+    if (!tuned && fLast) {
+      fSum += now - fLast; fN++;
+      if (fN === 90) {
+        tuned = true;
+        const avg = fSum / fN;
+        if (avg > 22) { pr = 1; renderer.setPixelRatio(pr); uniforms.uPR.value = pr; W = 0; resize(); geo.setDrawRange(0, Math.floor(P.n * 0.6)); }
+        else if (avg > 18 && pr > 1) { pr = Math.max(1, pr - 0.25); renderer.setPixelRatio(pr); uniforms.uPR.value = pr; W = 0; resize(); }
+      }
+    }
+    fLast = now;
     const t = (performance.now() - t0) / 1000;
     uniforms.uTime.value = t;
 
@@ -230,5 +256,5 @@ function init(THREE) {
       reticle.classList.toggle('on', hit && fadeOut === 1 && scrollP < 0.3 && uniforms.uAssemble.value > 1);
     }
   }
-  frame();
+  wake();
 }
