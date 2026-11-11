@@ -1,9 +1,10 @@
 /* ───────────────────────────────────────────────────────────
-   STERILVISION — script.js
+   STERILVISION · script.js
+   Funktioniert auch ohne GSAP/Lenis: dann ohne Animationen.
    ─────────────────────────────────────────────────────────── */
 
 /* ============================================================
-   KONTAKT / SOCIAL LINKS  —  HIER ANPASSEN
+   KONTAKT / SOCIAL LINKS · HIER ANPASSEN
    ============================================================ */
 const SOCIALS = [
   { label: 'E-Mail',   url: 'mailto:albert.heruth@gmail.com', icon: 'mail' },
@@ -17,58 +18,188 @@ const ICONS = {
   github: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.22-3.37-1.22-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.35 4.81-4.58 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>',
 };
 
-(function renderSocials() {
-  const wrap = document.getElementById('social-links');
-  if (!wrap) return;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasGsap = () => window.gsap && window.ScrollTrigger;
+
+/* ── Socials und Jahr ───────────────────────────────────── */
+$$('[data-socials]').forEach((wrap) => {
   wrap.innerHTML = SOCIALS.map((s) => {
     const ext = s.url.startsWith('http') ? ' target="_blank" rel="noopener"' : '';
-    return `<a href="${s.url}"${ext} aria-label="${s.label}">${ICONS[s.icon] || ''}<span class="sr-only">${s.label}</span></a>`;
+    return `<a href="${s.url}"${ext} aria-label="${s.label}">${ICONS[s.icon] || ''}</a>`;
   }).join('');
-})();
+});
+$$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
-const yearEl = document.getElementById('year');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+/* ── Smooth Scroll (Lenis) ──────────────────────────────── */
+let lenis = null;
+if (window.Lenis && !reduce) {
+  lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+  if (hasGsap()) {
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+  }
+}
 
-/* ── Header: subtle border once the page is scrolled ───── */
-(function headerScroll() {
-  const header = document.getElementById('site-header');
-  if (!header) return;
-  const upd = () => header.classList.toggle('scrolled', window.scrollY > 8);
+/* Anker-Links weich ansteuern */
+$$('a[href^="#"]').forEach((a) => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id.length < 2) return;
+    const t = $(id);
+    if (!t) return;
+    e.preventDefault();
+    closeMenu();
+    if (lenis) lenis.scrollTo(t, { offset: id === '#top' ? 0 : -10, duration: 1.4 });
+    else t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    history.replaceState(null, '', id);
+  });
+});
+
+/* ── Header: Hintergrund ab Scroll, versteckt beim Runterscrollen ── */
+(() => {
+  const h = $('#site-header');
+  if (!h) return;
+  let last = 0;
+  const upd = () => {
+    const y = scrollY;
+    h.classList.toggle('scrolled', y > 10);
+    h.classList.toggle('hidden', y > 600 && y > last + 4 && !document.body.classList.contains('menu-open'));
+    if (y < last - 4) h.classList.remove('hidden');
+    last = y;
+  };
   upd();
   addEventListener('scroll', upd, { passive: true });
 })();
 
-/* ── Reveal on scroll ───────────────────────────────────── */
-(function reveal() {
-  const els = document.querySelectorAll('.reveal');
-  if (!els.length) return;
-  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    els.forEach((el) => el.classList.add('in-view'));
-    return;
-  }
+/* ── Mobiles Menü ───────────────────────────────────────── */
+const menuBtn = $('#menu-btn');
+function closeMenu() {
+  document.body.classList.remove('menu-open');
+  menuBtn && menuBtn.setAttribute('aria-expanded', 'false');
+  lenis && lenis.start();
+}
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    const open = document.body.classList.toggle('menu-open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    if (lenis) open ? lenis.stop() : lenis.start();
+  });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+  $$('#mobile-menu a').forEach((a) => a.addEventListener('click', closeMenu));
+}
+
+/* ── Reveals (IntersectionObserver, CSS-Übergänge) ──────── */
+(() => {
+  const els = $$('[data-reveal]');
+  if (!('IntersectionObserver' in window) || reduce) { els.forEach((el) => el.classList.add('in')); return; }
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   els.forEach((el) => io.observe(el));
 })();
 
-/* ── Contact form → Formspree (AJAX, no redirect) ──────── */
-(function contactForm() {
-  const form = document.getElementById('contact-form');
-  const status = document.getElementById('form-status');
-  const btn = document.getElementById('submit-btn');
+/* ── GSAP: Hero-Intro ────────── */
+function initGsap() {
+  if (!hasGsap() || reduce) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero-Headline Zeile für Zeile, Wort für Wort
+  const h1 = $('[data-split]');
+  if (h1 && window.SplitText) {
+    gsap.registerPlugin(SplitText);
+    const split = new SplitText(h1, { type: 'words,lines', linesClass: 'line', mask: 'lines' });
+    gsap.from(split.words, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.06, delay: 0.2 });
+  }
+  gsap.from('[data-hero]', { y: 24, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1, delay: 0.55 });
+
+  // Hero-Text beim Scrollen leicht nach oben und ausblenden
+  gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  // Hintergrund-Instrumente wandern leicht gegen die Scrollrichtung
+  $$('.bg-tool').forEach((el, i) => {
+    gsap.to(el, { y: -(80 + (i % 3) * 70), ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: true } });
+  });
+
+  // Finale-Karten: Licht folgt der Maus
+  $$('.finale-card').forEach((c) => c.addEventListener('pointermove', (e) => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    c.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }));
+
+  addEventListener('load', () => ScrollTrigger.refresh());
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initGsap); else initGsap();
+
+/* ── Videos: Loops erst laden, wenn sichtbar ────────────── */
+(() => {
+  const vids = $$('video[data-lazy]');
+  if (!vids.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const v = e.target;
+      if (e.isIntersecting) {
+        if (!v.dataset.loaded) {
+          $$('source[data-src]', v).forEach((s) => { s.src = s.dataset.src; });
+          v.load(); v.dataset.loaded = '1';
+        }
+        if (!reduce) v.play().catch(() => {});
+      } else v.pause();
+    });
+  }, { rootMargin: '200px 0px' });
+  vids.forEach((v) => io.observe(v));
+})();
+
+/* ── Stimmen: WKK zuerst, UKSH bei Bedarf ───────────────── */
+(() => {
+  const tabs = $$('.voice-tab');
+  if (!tabs.length) return;
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    const key = tab.dataset.voice;
+    tabs.forEach((x) => x.setAttribute('aria-selected', String(x === tab)));
+    $$('.voice-stage [data-voice]').forEach((p) => {
+      const on = p.dataset.voice === key;
+      if (!on) { $('video', p).pause(); p.classList.toggle('playing', false); }
+      p.hidden = !on;
+    });
+  }));
+})();
+
+/* ── Player mit Cover (Videostatements) ─────────────────── */
+$$('[data-player]').forEach((p) => {
+  const v = $('video', p), cover = $('.player-cover', p);
+  cover.addEventListener('click', () => {
+    // andere Player stoppen
+    $$('[data-player] video').forEach((o) => { if (o !== v) o.pause(); });
+    p.classList.add('playing');
+    v.play().catch(() => {});
+    v.focus({ preventScroll: true });
+  });
+  v.addEventListener('ended', () => { p.classList.remove('playing'); v.currentTime = 0; });
+});
+
+/* ── Kontaktformular → Formspree (AJAX) ─────────────────── */
+(() => {
+  const form = $('#contact-form');
   if (!form) return;
+  const status = $('#form-status'), btn = $('#submit-btn');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     btn.disabled = true;
-    status.textContent = 'Wird gesendet …'; status.className = 'form-status busy';
+    status.textContent = 'Wird gesendet …'; status.className = 'form-status';
     try {
       const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
       if (res.ok) {
         form.reset();
-        status.textContent = 'Gesendet — danke! Wir melden uns.'; status.className = 'form-status ok';
+        status.textContent = 'Gesendet. Danke, wir melden uns.'; status.className = 'form-status ok';
       } else {
         const d = await res.json().catch(() => ({}));
         status.textContent = (d.errors && d.errors[0] && d.errors[0].message) || 'Senden fehlgeschlagen. Bitte per E-Mail versuchen.';

@@ -2,91 +2,127 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Impressum — STERILVISION</title>
-  <meta name="robots" content="noindex" />
-  <meta name="theme-color" content="#0e1620" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Impressum · SterilVision</title>
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#08101a" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-    <div class="bg" aria-hidden="true">
-    <div class="bg-grad"></div>
-    <div class="bg-pattern"></div>
-    <img class="bg-mark" src="assets/logo-emblem.png" alt="" loading="lazy" />
-    <svg class="bg-icon tray" viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="46" height="30" rx="4"/><path d="M1 11h46M1 21h46M13 1v30M25 1v30M37 1v30" stroke-opacity="0.6"/></svg>
-    <svg class="bg-icon scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 8.5 19 19M8.5 15.5 19 5" stroke-linecap="round"/></svg>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="bg-tools" aria-hidden="true">
+    <span class="bg-dots"></span>
+    <span class="bg-tool t1"><svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="46" height="30" rx="4"/><path d="M1 11h46M1 21h46M13 1v30M25 1v30M37 1v30" stroke-opacity="0.6"/></svg></span>
+    <span class="bg-tool t2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 8.5 19 19M8.5 15.5 19 5" stroke-linecap="round"/></svg></span>
+    <span class="bg-tool t3"><svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round"><circle cx="3.5" cy="4" r="2.5"/><circle cx="3.5" cy="12" r="2.5"/><path d="M5.8 5 14 7.6M5.8 11 14 8.4M14 7.6 31 7.8M14 8.4 31 8.2M8 6.6l1 1.4M10 7.2l1 1"/></svg></span>
+    <span class="bg-tool bg-wm t4 logo-mark"></span>
+    <span class="bg-tool t5"><svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="46" height="30" rx="4"/><path d="M1 11h46M1 21h46M13 1v30M25 1v30M37 1v30" stroke-opacity="0.6"/></svg></span>
+    <span class="bg-tool t6"><svg viewBox="0 0 32 8" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"><rect x="0.5" y="2.5" width="18" height="3" rx="1.5"/><path d="M18.5 3h2l1-1c4 0 7 0.8 10 2-3 1-6.5 1.6-10 1.6l-1-0.6h-2"/></svg></span>
+    <span class="bg-tool t7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 8.5 19 19M8.5 15.5 19 5" stroke-linecap="round"/></svg></span>
+    <span class="bg-tool t8"><svg viewBox="0 0 32 8" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M1 4c0-.6.5-1 1-1l29 .6M1 4c0 .6.5 1 1 1l29-.6"/><path d="M6 3.2v1.6M8 3.2v1.6M10 3.2v1.6" stroke-opacity=".6"/></svg></span>
+    <span class="bg-tool bg-wm t9 logo-mark"></span>
+    <span class="bg-tool t10"><svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="1" y="1" width="46" height="30" rx="4"/><path d="M1 11h46M1 21h46M13 1v30M25 1v30M37 1v30" stroke-opacity="0.6"/></svg></span>
   </div>
 
-  <article class="legal">
-    <a class="back" href="index.html">← Zurück zur Startseite</a>
+  <header class="site-header" id="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="SterilVision Startseite">
+        <span class="logo-mark" aria-hidden="true"></span>
+        <span class="logo-word" aria-hidden="true"></span>
+      </a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <div class="nav-links">
+          <a href="index.html#finale">Finale</a>
+          <a href="index.html#film">Film</a>
+          <a href="index.html#anlage">Anlage</a>
+          <a href="index.html#stimme">Klinik</a>
+          <a href="index.html#team">Team</a>
+        </div>
+        <a class="btn btn-primary btn-sm" href="kontakt.html">Kontakt</a>
+        <button class="menu-btn" id="menu-btn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+      </nav>
+    </div>
+  </header>
 
-    <h2>Impressum</h2>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation">
+    <a href="index.html#finale">Finale</a>
+    <a href="index.html#film">Film</a>
+    <a href="index.html#anlage">Anlage</a>
+    <a href="index.html#stimme">Klinik</a>
+    <a href="index.html#team">Team</a>
+    <a href="kontakt.html">Kontakt</a>
+  </nav>
 
-    <h3>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</h3>
-    <p>
-      Albert Heruth<br />
-      Klint 6<br />
-      25770 Hemmingstedt<br />
-      Deutschland
-    </p>
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <h1 data-reveal>Impressum</h1>
+      </div>
+    </section>
 
-    <h3>Kontakt</h3>
-    <p>
-      E-Mail: <a href="mailto:albert.heruth@gmail.com">albert.heruth@gmail.com</a><br />
-      Telefon: 015204277531
-    </p>
+    <div class="wrap">
+      <article class="legal">
+        <h2 style="margin-top:0">Angaben gemäß § 5 DDG</h2>
+        <p>Albert Heruth<br />Klint 6<br />25770 Hemmingstedt<br />Deutschland</p>
 
-    <h3>Vertreten durch</h3>
-    <p>Albert Heruth</p>
+        <h3>Kontakt</h3>
+        <p>E-Mail: <a href="mailto:albert.heruth@gmail.com">albert.heruth@gmail.com</a><br />Telefon: 015204277531</p>
 
-    <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
-    <p>Albert Heruth<br />Klint 6, 25770 Hemmingstedt</p>
+        <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
+        <p>Albert Heruth<br />Klint 6, 25770 Hemmingstedt</p>
 
-    <h2>Haftungsausschluss</h2>
+        <h2>Bildnachweise und Medien</h2>
+        <p>Fotos, Aufnahmen und Grafiken: SterilVision. Erklärfilm: Bundeswettbewerb Künstliche Intelligenz 2026. Videostatements: Sebastian Kimstädt, Gennadii Ivanov. Logos der Partner und Wettbewerbe sind Eigentum der jeweiligen Inhaber.</p>
 
-    <h3>Haftung für Inhalte</h3>
-    <p>
-      Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den
-      allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht
-      verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen
-      zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder
-      Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine
-      diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung
-      möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend
-      entfernen.
-    </p>
+        <h2>Haftung für Inhalte</h2>
+        <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine Haftung ist erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen entfernen wir diese Inhalte umgehend.</p>
 
-    <h3>Haftung für Links</h3>
-    <p>
-      Unser Angebot enthält gegebenenfalls Links zu externen Websites Dritter, auf deren Inhalte wir keinen
-      Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die
-      Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
-      verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße
-      überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente
-      inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer
-      Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links
-      umgehend entfernen.
-    </p>
+        <h2>Haftung für Links</h2>
+        <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte übernehmen wir keine Gewähr. Verantwortlich ist stets der jeweilige Anbieter oder Betreiber der Seiten. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße geprüft, rechtswidrige Inhalte waren nicht erkennbar. Bei Bekanntwerden von Rechtsverletzungen entfernen wir derartige Links umgehend.</p>
 
-    <h3>Urheberrecht</h3>
-    <p>
-      Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen
-      Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
-      Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
-      Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.
-      Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte
-      Dritter beachtet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir
-      um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte
-      umgehend entfernen.
-    </p>
+        <h2>Urheberrecht</h2>
+        <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors oder Erstellers. Soweit Inhalte nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Sollten Sie dennoch auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen Hinweis.</p>
+      </article>
+    </div>
+  </main>
 
-    <p style="margin-top:36px"><a href="datenschutz.html">→ Datenschutzerklärung</a></p>
-  </article>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="SterilVision">
+            <span class="logo-mark" aria-hidden="true"></span>
+            <span class="logo-word" aria-hidden="true"></span>
+          </a>
+          <p>KI-Sichtprüfung für die Sterilgutversorgung. Aus Hemmingstedt, Schleswig-Holstein.</p>
+          <div class="socials" data-socials></div>
+        </div>
+        <div class="footer-col">
+          <span class="mono">Seite</span>
+          <a href="index.html#finale">Finale</a>
+          <a href="index.html#film">Film</a>
+          <a href="index.html#anlage">Anlage</a>
+          <a href="index.html#stimme">Klinik</a>
+          <a href="index.html#team">Team</a>
+        </div>
+        <div class="footer-col">
+          <span class="mono">Rechtliches</span>
+          <a href="kontakt.html">Kontakt</a>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> SterilVision</span>
+        <span>Ohne Cookies. Ohne Tracking.</span>
+      </div>
+      <div class="footer-word" aria-hidden="true"><span class="logo-word"></span></div>
+    </div>
+  </footer>
+
+  <script src="vendor/lenis.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
