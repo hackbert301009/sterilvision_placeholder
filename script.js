@@ -1,6 +1,6 @@
 /* ───────────────────────────────────────────────────────────
    STERILVISION · script.js
-   Funktioniert auch ohne GSAP/Lenis: dann ohne Animationen.
+   Funktioniert auch ohne GSAP: dann ohne Animationen.
    ─────────────────────────────────────────────────────────── */
 
 /* ============================================================
@@ -32,21 +32,10 @@ $$('[data-socials]').forEach((wrap) => {
 });
 $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
-/* ── Smooth Scroll (Lenis) ──────────────────────────────── */
-let lenis = null;
-if (window.Lenis && !reduce) {
-  lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
-  if (hasGsap()) {
-    gsap.registerPlugin(ScrollTrigger);
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  } else {
-    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-}
-
+/* ── Scrollen ───────────────────────────────────────────
+   Natives Scrollen, kein Smooth-Scroll-Plugin. Weiches Ansteuern
+   von Ankern nur, wenn keine reduzierte Bewegung gewünscht ist.
+   ─────────────────────────────────────────────────────────── */
 /* Anker-Links weich ansteuern */
 $$('a[href^="#"]').forEach((a) => {
   a.addEventListener('click', (e) => {
@@ -56,8 +45,7 @@ $$('a[href^="#"]').forEach((a) => {
     if (!t) return;
     e.preventDefault();
     closeMenu();
-    if (lenis) lenis.scrollTo(t, { offset: id === '#top' ? 0 : -10, duration: 1.4 });
-    else t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
     history.replaceState(null, '', id);
   });
 });
@@ -87,14 +75,12 @@ const menuBtn = $('#menu-btn');
 function closeMenu() {
   document.body.classList.remove('menu-open');
   menuBtn && menuBtn.setAttribute('aria-expanded', 'false');
-  lenis && lenis.start();
 }
 if (menuBtn) {
   menuBtn.addEventListener('click', () => {
     const open = document.body.classList.toggle('menu-open');
     menuBtn.setAttribute('aria-expanded', String(open));
     menuBtn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    if (lenis) open ? lenis.stop() : lenis.start();
   });
   addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
   $$('#mobile-menu a').forEach((a) => a.addEventListener('click', closeMenu));
@@ -110,25 +96,12 @@ if (menuBtn) {
   els.forEach((el) => io.observe(el));
 })();
 
-/* ── GSAP: Hero-Intro ────────── */
+/* ── GSAP ────────── */
 function initGsap() {
   if (!hasGsap() || reduce) return;
   gsap.registerPlugin(ScrollTrigger);
   // Mobile Adressleiste löst kein Neuberechnen aller Trigger aus
   ScrollTrigger.config({ ignoreMobileResize: true });
-
-  // Hero-Headline Zeile für Zeile, Wort für Wort
-  const h1 = $('[data-split]');
-  if (h1 && window.SplitText) {
-    gsap.registerPlugin(SplitText);
-    const split = new SplitText(h1, { type: 'words,lines', linesClass: 'line', mask: 'lines' });
-    // Nach der Intro wieder echter Text, damit die Zeilen bei Größenänderung sauber umbrechen
-    gsap.from(split.words, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.06, delay: 0.2, onComplete: () => split.revert() });
-  }
-  gsap.from('[data-hero]', { y: 24, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1, delay: 0.55 });
-
-  // Hero-Text beim Scrollen leicht nach oben und ausblenden
-  gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
   // Finale-Karten: Licht folgt der Maus
   $$('.finale-card').forEach((c) => c.addEventListener('pointermove', (e) => {
@@ -140,6 +113,30 @@ function initGsap() {
   addEventListener('load', () => ScrollTrigger.refresh());
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initGsap); else initGsap();
+
+/* ── Hero-Video: nur abspielen, wenn sichtbar und Bewegung erwünscht ── */
+(() => {
+  const v = $('[data-hero-video]');
+  if (!v) return;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  if (reduce || saveData) return; // Standbild (Poster) bleibt stehen
+  const btn = $('[data-hero-toggle]');
+  let userPaused = false;
+  const play = () => { const p = v.play(); if (p) p.catch(() => {}); };
+  const sync = () => {
+    if (!btn) return;
+    btn.setAttribute('aria-pressed', String(userPaused));
+    btn.setAttribute('aria-label', userPaused ? 'Video abspielen' : 'Video anhalten');
+    btn.classList.toggle('is-paused', userPaused);
+  };
+  if (btn) {
+    btn.hidden = false;
+    btn.addEventListener('click', () => { userPaused = !userPaused; userPaused ? v.pause() : play(); sync(); });
+  }
+  sync();
+  if (!('IntersectionObserver' in window)) { play(); return; }
+  new IntersectionObserver(([e]) => (e.isIntersecting && !userPaused ? play() : v.pause()), { threshold: 0.2 }).observe(v);
+})();
 
 /* ── Logo-Band nur animieren, wenn es zu sehen ist ──────── */
 (() => {

@@ -7,11 +7,11 @@ Statisch (HTML, CSS, JS), kein Build-Schritt, gehostet über GitHub Pages.
 
 | Datei / Ordner | Inhalt |
 |---|---|
-| `index.html` | Startseite: Hero (3D), Finale und Wettbewerbe, BWKI-Film, Anlage, Klinikstimmen (WKK, UKSH), Team, Wegbegleiter |
+| `index.html` | Startseite: Hero (Video der Prüfzelle), Finale und Wettbewerbe, BWKI-Film, Anlage, Klinikstimmen (WKK, UKSH), Team, Wegbegleiter |
 | `kontakt.html` | Kontaktformular (Formspree) mit Einwilligung |
 | `impressum.html`, `datenschutz.html` | Rechtliches |
 | `styles.css` | Corporate Design. Alle Farben, Schriften und Abstände als Tokens in `:root` |
-| `script.js` | Smooth Scroll, Animationen, Videos, Stimmen-Umschalter, Menü, Formular. Social-Links oben im Array `SOCIALS` |
+| `script.js` | Ankerscrollen, Animationen, Hero-Video, Videos, Stimmen-Umschalter, Menü, Formular. Social-Links oben im Array `SOCIALS` |
 | `assets/js/hero3d.js` | 3D-Partikelschere mit Scanstrahl (three.js) |
 | `assets/brand/` | Logo als Vektor: `sv-mark.svg`, `sv-wordmark.svg`, `sv-logo.svg` (Farbe über CSS) |
 | `assets/fonts/` | Inter, Inter Display, JetBrains Mono als woff2 (selbst gehostet) |
