@@ -11,9 +11,10 @@ Alles zur Überarbeitung der Startseite an einem Ort.
 
 **Umgesetzt:** neuer Hero mit echtem Video der Prüfzelle statt 3D-Schere, ruhigere Typografie, asymmetrisches Layout, Belegzeile, Pause-Button am Video, Lenis und SplitText entfernt.
 
+**Umgesetzt 14.11.2026:** Fernsehbeitrag MDR Sachsenspiegel (12.11.2026) als Abschnitt "Im Fernsehen", Video lädt erst nach Klick, Datenschutzerklärung ergänzt.
+
 **Inhalt folgt später:**
 - Sonderpreis "No risk, no fun!" beim BWKI-Finale in Tübingen (13.11.2026). Offizielle Quelle verlinken, sobald veröffentlicht. Foto der Verleihung mit Bildunterschrift.
-- Interview beim Mitteldeutschen Rundfunk. Immer "Mitteldeutscher Rundfunk (MDR)" ausschreiben (Verwechslung mit EU-Medizinprodukteverordnung). Sendung, Datum, Link.
 
 **Offene Entscheidungen:**
 - Headline-Schrift: technisch-nüchtern oder redaktionell

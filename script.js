@@ -138,6 +138,22 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
   new IntersectionObserver(([e]) => (e.isIntersecting && !userPaused ? play() : v.pause()), { threshold: 0.2 }).observe(v);
 })();
 
+/* ── Externe Videos (ARD Mediathek): erst nach Klick laden ── */
+$$('[data-ext-video]').forEach((box) => {
+  const btn = $('[data-ext-load]', box);
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = box.dataset.src;
+    f.title = box.dataset.title || 'Video';
+    f.allow = 'autoplay; fullscreen';
+    f.allowFullscreen = true;
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    box.replaceChildren(f);
+    f.focus();
+  });
+});
+
 /* ── Logo-Band nur animieren, wenn es zu sehen ist ──────── */
 (() => {
   const m = $('.marquee');
