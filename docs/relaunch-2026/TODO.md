@@ -1,6 +1,6 @@
 # ToDos SterilVision Website
 
-Stand: 14.11.2026. Grundlage ist die Recherche in [docs/RECHERCHE-DESIGN-2026.md](docs/RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
+Stand: 14.11.2026. Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
 
 Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheidung. Ein einzelnes "KI-Muster" ist kein Problem, die Häufung ist es ([Auswertung von 1.590 Landingpages](https://adriankrebs.ch/blog/design-slop/), [Anthropic: Frontend Aesthetics](https://platform.claude.com/cookbook/coding-prompting-for-frontend-aesthetics), [Anthropic Blog](https://claude.com/blog/improving-frontend-design-through-skills)).
 
