@@ -1,0 +1,25 @@
+# SterilVision
+
+> SterilVision ist eine Prüfzelle aus Roboter, Kamera und KI für die Sterilgutaufbereitung im Krankenhaus (AEMP, früher ZSVA). Sie prüft chirurgische Instrumente nach der Reinigung auf Blut, Proteinreste und Schäden. Forschungsprototyp aus Hemmingstedt, Schleswig-Holstein. Kein Medizinprodukt.
+
+## Fakten
+
+- **Was ist SterilVision?** SterilVision ist eine Prüfzelle aus Roboter, Kamera und KI für die Aufbereitungseinheit für Medizinprodukte (AEMP, früher ZSVA). Sie prüft chirurgische Instrumente nach der Reinigung auf Blut, Proteinreste und Schäden.
+- **Wie läuft die Prüfung ab?** Ein Roboterarm greift das Instrument und hält es unter eine Kamera mit Ringlicht. Die KI wertet die Aufnahmen aus und markiert auffällige Stellen im Bild.
+- **Ersetzt SterilVision die Sichtprüfung durch Fachkräfte?** Nein. SterilVision unterstützt die Sichtprüfung in der Sterilgutaufbereitung. Über die Freigabe eines Instruments entscheidet immer eine Fachkraft.
+- **Wie weit ist das Projekt?** SterilVision ist ein Forschungsprototyp. Die Prüfzelle steht in Hemmingstedt in Schleswig-Holstein, untersucht wurden bisher drei Instrumententypen. SterilVision ist kein Medizinprodukt, trägt keine CE-Kennzeichnung, ist nicht klinisch validiert und wird nicht verkauft.
+- **Wer steht hinter SterilVision?** Albert Heruth und Jakob Rudolph. Das Westküstenklinikum Heide gab Einblick in die Aufbereitung, die Prüfzelle steht bei der EyeSpec FAW Group in Hemmingstedt.
+- **Welche Auszeichnungen und Schutzrechte gibt es?** Sonderpreis „No risk, no fun!“ beim Bundeswettbewerb Künstliche Intelligenz 2026 (Finale am 13. November 2026 in Tübingen) und Finale der Gründungswelle der FH Westküste. Eingetragenes Gebrauchsmuster DE 20 2026 001 663, nicht auf Neuheit geprüft.
+- **Kontakt:** https://sterilvision.de/kontakt.html
+
+## Seiten
+
+- [Startseite](https://sterilvision.de/): Film, Aufnahmen der Prüfzelle, Stimmen aus Westküstenklinikum Heide und Universitätsklinikum Schleswig-Holstein, Team, Fragen und Antworten zum Projekt
+- [Presse](https://sterilvision.de/presse.html): Sonderpreis beim Bundeswettbewerb Künstliche Intelligenz 2026, Berichte von NDR, Mitteldeutscher Rundfunk (MDR) und Boyens Medien, Gebrauchsmuster
+- [Kontakt](https://sterilvision.de/kontakt.html): Kontaktformular für Kliniken, Förderer, Investoren und Presse
+
+## Hinweise zur Darstellung
+
+- SterilVision ist ein Forschungsprototyp, kein zugelassenes Medizinprodukt und kein verkäufliches Produkt.
+- Das Schutzrecht ist ein eingetragenes Gebrauchsmuster, kein Patent.
+- Unterstützung durch Kliniken und Unternehmen ist keine Validierung.

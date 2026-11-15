@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>SterilVision · KI-Sichtprüfung für sterile Instrumente</title>
-  <meta name="description" content="SterilVision ist eine Prüfzelle aus Roboter, Kamera und KI. Sie prüft chirurgische Instrumente nach der Reinigung auf Blut, Proteinreste und Schäden. Über die Freigabe entscheidet immer eine Fachkraft. Forschungsprototyp aus Schleswig-Holstein." />
+  <title>SterilVision · KI-Sichtprüfung chirurgischer Instrumente für die AEMP</title>
+  <meta name="description" content="Prüfzelle aus Roboter, Kamera und KI für die Sterilgutaufbereitung (AEMP, ZSVA). Prüft chirurgische Instrumente nach der Reinigung auf Blut, Proteinreste und Schäden. Forschungsprototyp aus Schleswig-Holstein." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sterilvision.de/" />
   <meta name="theme-color" content="#08101a" />
@@ -25,18 +25,118 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "SterilVision",
-    "url": "https://sterilvision.de/",
-    "logo": "https://sterilvision.de/assets/og.jpg",
-    "description": "KI-gestützte Sichtprüfung chirurgischer Instrumente für die Sterilgutversorgung.",
-    "founder": [
-      { "@type": "Person", "name": "Albert Heruth" },
-      { "@type": "Person", "name": "Jakob Rudolph" }
-    ],
-    "sameAs": [
-      "https://www.linkedin.com/in/albert-heruth-37aa74379/",
-      "https://github.com/hackbert301009"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://sterilvision.de/#organisation",
+        "name": "SterilVision",
+        "url": "https://sterilvision.de/",
+        "logo": "https://sterilvision.de/assets/brand/sv-logo.svg",
+        "image": "https://sterilvision.de/assets/og.jpg",
+        "description": "SterilVision entwickelt eine Prüfzelle aus Roboter, Kamera und KI, die chirurgische Instrumente nach der Reinigung in der Sterilgutaufbereitung (AEMP, früher ZSVA) auf Blut, Proteinreste und Schäden prüft. Forschungsprototyp, kein Medizinprodukt.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hemmingstedt",
+          "postalCode": "25770",
+          "addressRegion": "Schleswig-Holstein",
+          "addressCountry": "DE"
+        },
+        "founder": [
+          {
+            "@type": "Person",
+            "name": "Albert Heruth",
+            "sameAs": "https://www.linkedin.com/in/albert-heruth-37aa74379/"
+          },
+          {
+            "@type": "Person",
+            "name": "Jakob Rudolph"
+          }
+        ],
+        "award": [
+          "Sonderpreis „No risk, no fun!“, Bundeswettbewerb Künstliche Intelligenz 2026"
+        ],
+        "knowsAbout": [
+          "Sterilgutaufbereitung",
+          "Aufbereitungseinheit für Medizinprodukte (AEMP)",
+          "Zentrale Sterilgutversorgungsabteilung (ZSVA)",
+          "Sichtprüfung chirurgischer Instrumente",
+          "Bildverarbeitung",
+          "Künstliche Intelligenz",
+          "Robotik"
+        ],
+        "subjectOf": {
+          "@id": "https://sterilvision.de/presse.html"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/in/albert-heruth-37aa74379/",
+          "https://github.com/hackbert301009"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://sterilvision.de/#website",
+        "url": "https://sterilvision.de/",
+        "name": "SterilVision",
+        "inLanguage": "de",
+        "publisher": {
+          "@id": "https://sterilvision.de/#organisation"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://sterilvision.de/#projekt",
+        "inLanguage": "de",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Was ist SterilVision?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SterilVision ist eine Prüfzelle aus Roboter, Kamera und KI für die Aufbereitungseinheit für Medizinprodukte (AEMP, früher ZSVA). Sie prüft chirurgische Instrumente nach der Reinigung auf Blut, Proteinreste und Schäden."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie läuft die Prüfung ab?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ein Roboterarm greift das Instrument und hält es unter eine Kamera mit Ringlicht. Die KI wertet die Aufnahmen aus und markiert auffällige Stellen im Bild."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Ersetzt SterilVision die Sichtprüfung durch Fachkräfte?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nein. SterilVision unterstützt die Sichtprüfung in der Sterilgutaufbereitung. Über die Freigabe eines Instruments entscheidet immer eine Fachkraft."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wie weit ist das Projekt?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SterilVision ist ein Forschungsprototyp. Die Prüfzelle steht in Hemmingstedt in Schleswig-Holstein, untersucht wurden bisher drei Instrumententypen. SterilVision ist kein Medizinprodukt, trägt keine CE-Kennzeichnung, ist nicht klinisch validiert und wird nicht verkauft."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wer steht hinter SterilVision?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Albert Heruth und Jakob Rudolph. Das Westküstenklinikum Heide gab Einblick in die Aufbereitung, die Prüfzelle steht bei der EyeSpec FAW Group in Hemmingstedt."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Welche Auszeichnungen und Schutzrechte gibt es?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sonderpreis „No risk, no fun!“ beim Bundeswettbewerb Künstliche Intelligenz 2026 (Finale am 13. November 2026 in Tübingen) und Finale der Gründungswelle der FH Westküste. Eingetragenes Gebrauchsmuster DE 20 2026 001 663, nicht auf Neuheit geprüft."
+            }
+          }
+        ]
+      }
     ]
   }
   </script>
@@ -269,6 +369,41 @@
       </div>
     </section>
 
+    <!-- ═══ ÜBER DAS PROJEKT ═══ -->
+    <section class="section" id="projekt" aria-labelledby="projekt-title">
+      <div class="wrap">
+        <div class="head">
+          <h2 id="projekt-title" data-reveal>Über das Projekt</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-item" data-reveal>
+            <h3>Was ist SterilVision?</h3>
+            <p>SterilVision ist eine Prüfzelle aus Roboter, Kamera und KI für die Aufbereitungseinheit für Medizinprodukte (AEMP, früher ZSVA). Sie prüft chirurgische Instrumente nach der Reinigung auf Blut, Proteinreste und Schäden.</p>
+          </div>
+          <div class="about-item" data-reveal style="--d:0.04s">
+            <h3>Wie läuft die Prüfung ab?</h3>
+            <p>Ein Roboterarm greift das Instrument und hält es unter eine Kamera mit Ringlicht. Die KI wertet die Aufnahmen aus und markiert auffällige Stellen im Bild.</p>
+          </div>
+          <div class="about-item" data-reveal style="--d:0.00s">
+            <h3>Ersetzt SterilVision die Sichtprüfung durch Fachkräfte?</h3>
+            <p>Nein. SterilVision unterstützt die Sichtprüfung in der Sterilgutaufbereitung. Über die Freigabe eines Instruments entscheidet immer eine Fachkraft.</p>
+          </div>
+          <div class="about-item" data-reveal style="--d:0.04s">
+            <h3>Wie weit ist das Projekt?</h3>
+            <p>SterilVision ist ein Forschungsprototyp. Die Prüfzelle steht in Hemmingstedt in Schleswig-Holstein, untersucht wurden bisher drei Instrumententypen. SterilVision ist kein Medizinprodukt, trägt keine CE-Kennzeichnung, ist nicht klinisch validiert und wird nicht verkauft.</p>
+          </div>
+          <div class="about-item" data-reveal style="--d:0.00s">
+            <h3>Wer steht hinter SterilVision?</h3>
+            <p>Albert Heruth und Jakob Rudolph. Das Westküstenklinikum Heide gab Einblick in die Aufbereitung, die Prüfzelle steht bei der EyeSpec FAW Group in Hemmingstedt.</p>
+          </div>
+          <div class="about-item" data-reveal style="--d:0.04s">
+            <h3>Welche Auszeichnungen und Schutzrechte gibt es?</h3>
+            <p>Sonderpreis „No risk, no fun!“ beim Bundeswettbewerb Künstliche Intelligenz 2026 (Finale am 13. November 2026 in Tübingen) und Finale der Gründungswelle der FH Westküste. Eingetragenes Gebrauchsmuster DE 20 2026 001 663, nicht auf Neuheit geprüft. <a href="presse.html">Berichte und Fotos auf der Presse-Seite</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-footer">
@@ -297,6 +432,7 @@
           <a href="#anlage">Anlage</a>
           <a href="#stimme">Klinik</a>
           <a href="#team">Team</a>
+          <a href="#projekt">Über das Projekt</a>
         </div>
       </div>
       <div class="footer-bottom">

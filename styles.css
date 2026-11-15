@@ -741,3 +741,12 @@ p { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   .pt-card, .pt-lead .photo-frame img { transition: none; transform: none !important; }
 }
+
+/* ── Über das Projekt (Fragen und Antworten) ─────────────── */
+.about-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(32px, 5vw, 72px); border-top: 1px solid var(--line); }
+.about-item { padding: 28px 0 30px; border-bottom: 1px solid var(--line); }
+.about-item h3 { font-size: clamp(1.1rem, 1.5vw, 1.3rem); margin-bottom: 10px; }
+.about-item p { color: var(--muted); max-width: 54ch; }
+.about-item a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px; }
+.about-item a:hover { text-decoration-color: currentColor; }
+@media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } }

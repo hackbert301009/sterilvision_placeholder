@@ -9,6 +9,7 @@ Statisch (HTML, CSS, JS), kein Build-Schritt, gehostet über GitHub Pages.
 |---|---|
 | `index.html` | Startseite (Live-Design): Hero mit 3D-Partikelschere, Headline, Filmknopf und Faktenzeile (Stand, Team, Schutzrecht), Finale (BWKI-Karte verlinkt auf `presse.html#bwki`), BWKI-Film, Anlage-Videos als Kacheln, Klinikstimmen (WKK, UKSH), Team, Abschnitt „In den Medien“ (`#medien`, Teaser-Karten mit Datum und Link auf den jeweiligen Bericht), Wegbegleiter |
 | `presse.html` | Presse im dunklen Design: BWKI-Sonderpreis mit Fotos, NDR, Mitteldeutscher Rundfunk (MDR) mit Zwei-Klick-Video, Boyens Medien, Vortrag Juli 2026, Gebrauchsmuster, Kontakt-Aufruf. Alle Fotos mit Vollbildansicht. Neue Berichte als eigenen Abschnitt mit `id` eintragen, Datum und Medium im ersten Satz als `<time>`, und auf der Startseite unter `#medien` als Karte ergänzen. Fotocredit BWKI immer „Foto: Bundeswettbewerb KI / Ale Zea“ |
+| `llms.txt` | Kurzfakten für KI-Suchmaschinen. Bei inhaltlichen Änderungen zusammen mit dem Abschnitt „Über das Projekt“ und den strukturierten Daten (JSON-LD in `index.html`, `presse.html`) pflegen |
 | `kontakt.html` | Kontaktformular (Formspree) mit Einwilligung |
 | `impressum.html`, `datenschutz.html` | Rechtliches |
 | `styles.css` | Corporate Design (dunkel). Alle Farben, Schriften und Abstände als Tokens in `:root`. Regeln für die Presse-Seite und die Lightbox am Ende der Datei |
