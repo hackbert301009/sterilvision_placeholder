@@ -85,9 +85,14 @@ $$('a[href^="#"]').forEach((a) => {
 /* ── Mobiles Menü ───────────────────────────────────────── */
 const menuBtn = $('#menu-btn');
 function closeMenu() {
+  const was = document.body.classList.contains('menu-open');
   document.body.classList.remove('menu-open');
-  menuBtn && menuBtn.setAttribute('aria-expanded', 'false');
+  if (menuBtn) {
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Menü öffnen');
+  }
   lenis && lenis.start();
+  return was;
 }
 if (menuBtn) {
   menuBtn.addEventListener('click', () => {
@@ -96,7 +101,7 @@ if (menuBtn) {
     menuBtn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
     if (lenis) open ? lenis.stop() : lenis.start();
   });
-  addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && closeMenu()) menuBtn.focus(); });
   $$('#mobile-menu a').forEach((a) => a.addEventListener('click', closeMenu));
 }
 
@@ -108,6 +113,8 @@ if (menuBtn) {
     entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   els.forEach((el) => io.observe(el));
+  // Per Tab fokussierte Links nicht unsichtbar lassen
+  document.addEventListener('focusin', (e) => { const r = e.target.closest('[data-reveal]:not(.in)'); if (r) r.classList.add('in'); });
 })();
 
 /* ── GSAP: Hero-Intro ────────── */

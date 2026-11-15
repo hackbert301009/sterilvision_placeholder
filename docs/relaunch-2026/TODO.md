@@ -12,6 +12,20 @@ Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheid
 - [x] Datenschutzerklärung nennt wieder GSAP, ScrollTrigger, SplitText, Lenis und three.js (alles lokal) und den ARD-Abschnitt mit Verweis auf die Seite Presse
 - Die Punkte unter „Redesign 15.11.2026“ und „Ganze Seite: KI-Look abbauen“ gelten damit nicht mehr für das Design, nur noch als Ideensammlung
 
+## Navigation und Presse-Verknüpfung 15.11.2026
+
+Konzept und Quellen: [PRESSE-VERKNUEPFUNG-2026.md](PRESSE-VERKNUEPFUNG-2026.md)
+
+- [x] Kopfnavigation auf allen fünf Seiten nur noch Startseite und Presse, Button Kontakt, aktive Seite per `aria-current`. Mobil „Presse“ sichtbar im Kopf, Menü mit drei Einträgen
+- [x] Footer: Spalte „Seiten“ (Startseite, Presse, Kontakt, Impressum, Datenschutz) und „Auf der Startseite“ (Finale, In den Medien, Film, Anlage, Klinik, Team)
+- [x] Startseite: Sonderpreis-Pill im Hero, BWKI-Karte führt zu `presse.html#bwki`, neuer Abschnitt „In den Medien“ mit Teaser-Karten. Stations-Chip „Sonderpreis und Presse“ entfällt
+- [x] `kontakt.html`: Eintrag „Presse“ in der Direktliste
+- [x] `presse.html`: Übersichtsliste und kleine Quellenzeilen entfernt, Datum und Medium stehen im ersten Satz als `<time>`. Fotocredits bleiben
+- [ ] Offen: Soll der Stations-Chip „Sonderpreis und Presse“ wirklich wegfallen? Empfehlung: ja
+- [ ] Boyens Medien um Erlaubnis für das Logo im Marquee (`assets/logos/boyens.webp`) bitten
+- [ ] Wer spricht im NDR-Zitat? Erst prüfen, dann ggf. `<cite>` ergänzen
+- [ ] Startseite bei 320 px: Klinik-Abschnitt (`.voice-stage`, `.voices`) ist 26 px zu breit, schon vor dieser Änderung so
+
 ## Erledigt (Branch `redesign/hero-ohne-ki-look`)
 
 - [x] 3D-Partikelschere (three.js) aus dem Hero entfernt, echtes Video der Prüfzelle als Hauptbild
@@ -46,7 +60,7 @@ Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheid
 - [x] **Interview Mitteldeutscher Rundfunk**: Abschnitt "Im Fernsehen" (#presse) mit Sender, Sendung (Sachsenspiegel), Datum (12.11.2026), Beitragstitel und Link zur [ARD Mediathek](https://www.ardmediathek.de/video/Y3JpZDovL21kci5kZS9iZWl0cmFnL2Ntcy8yZDJiZmMzZi1hMzNkLTQ1N2ItYjhjYy02Nzc3ZGFhY2JjNzQ). Video wird erst nach Klick geladen (Zwei-Klick-Lösung), Datenschutzerklärung um Abschnitt "Fernsehbeitrag aus der ARD Mediathek" ergänzt. Eintrag in der Belegzeile im Hero und Menüpunkt "Presse".
 - [ ] Beitrag in der Mediathek verfügbar bis 12.11.2027. Vorher Link prüfen, danach Abschnitt auf reinen Text mit Quellenangabe umstellen.
 - [ ] Datenschutz-Abschnitt zur ARD Mediathek einmal juristisch gegenlesen lassen.
-- [x] Kleine Zeitleiste (Datum, Ereignis, Quelle) statt Logoleiste, umgesetzt auf `presse.html` ([Evidence auf Webseiten](https://www.orbitmedia.com/blog/evidence-webpages/), [Social Proof](https://www.orbitmedia.com/blog/social-proof-web-design/))
+- [x] Kleine Zeitleiste (Datum, Ereignis, Quelle) statt Logoleiste, umgesetzt auf `presse.html` (am 15.11.2026 auf Wunsch wieder entfernt, Daten stehen jetzt im Fließtext und auf der Startseite unter „In den Medien“) ([Evidence auf Webseiten](https://www.orbitmedia.com/blog/evidence-webpages/), [Social Proof](https://www.orbitmedia.com/blog/social-proof-web-design/))
 
 ## Hero, nächste Schritte
 

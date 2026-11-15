@@ -67,12 +67,8 @@
       </a>
       <nav class="nav" aria-label="Hauptnavigation">
         <div class="nav-links">
-          <a href="#finale">Finale</a>
+          <a href="#top" aria-current="page">Startseite</a>
           <a href="presse.html">Presse</a>
-          <a href="#film">Film</a>
-          <a href="#anlage">Anlage</a>
-          <a href="#stimme">Klinik</a>
-          <a href="#team">Team</a>
         </div>
         <a class="btn btn-primary btn-sm" href="kontakt.html">Kontakt</a>
         <button class="menu-btn" id="menu-btn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
@@ -81,12 +77,8 @@
   </header>
 
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation">
-    <a href="#finale">Finale</a>
+    <a href="#top" aria-current="page">Startseite</a>
     <a href="presse.html">Presse</a>
-    <a href="#film">Film</a>
-    <a href="#anlage">Anlage</a>
-    <a href="#stimme">Klinik</a>
-    <a href="#team">Team</a>
     <a href="kontakt.html">Kontakt</a>
   </nav>
 
@@ -98,6 +90,11 @@
 
       <div class="wrap">
         <div class="hero-inner">
+          <a class="finale-pill" href="presse.html#bwki" data-hero aria-label="Sonderpreis „No risk, no fun!“ beim Bundeswettbewerb KI 2026, zur Presseseite">
+            <span class="tag">Sonderpreis</span>
+            <span><b>„No risk, no fun!“</b><span class="pill-long"> beim Bundeswettbewerb KI 2026</span></span>
+            <span aria-hidden="true">→</span>
+          </a>
           <h1 data-split>Der zweite Blick für jedes Instrument</h1>
           <p class="lead" data-hero>KI-Sichtprüfung für die Sterilgutversorgung. Damit nur sauberes und unversehrtes Besteck in den OP gelangt.</p>
           <div class="hero-actions" data-hero>
@@ -115,11 +112,12 @@
           <h2 data-reveal>Zweimal im Finale</h2>
         </div>
         <div class="finale-grid">
-          <a class="finale-card" href="https://www.bw-ki.de/" target="_blank" rel="noopener" data-reveal>
+          <a class="finale-card" href="presse.html#bwki" data-reveal>
             <div class="top">
               <img decoding="async" src="assets/logos/bwki.webp" alt="Bundeswettbewerb Künstliche Intelligenz" width="122" height="160" loading="lazy" />
             </div>
             <div class="big">Bundeswettbewerb<br />Künstliche Intelligenz</div>
+            <span class="card-more">Fotos und Berichte vom Finale <span aria-hidden="true">→</span></span>
             <div class="meta"><span class="chip">13.11.2026</span><span class="chip">Tübingen</span><span class="chip">Sonderpreis „No risk, no fun!“</span></div>
           </a>
           <a class="finale-card" href="https://www.fh-westkueste.de/" target="_blank" rel="noopener" data-reveal style="--d:.1s">
@@ -131,7 +129,6 @@
           </a>
         </div>
         <div class="stations" data-reveal>
-          <a class="chip link" href="presse.html">Sonderpreis und Presse →</a>
           <a class="chip link" href="https://www.medica.de/" target="_blank" rel="noopener">MEDICA Startup Competition ↗</a>
           <a class="chip link" href="https://www.jugend-forscht.de/" target="_blank" rel="noopener">Jugend forscht ↗</a>
           <a class="chip link" href="https://www.jugend-gruendet.de/" target="_blank" rel="noopener">Jugend gründet ↗</a>
@@ -243,6 +240,45 @@
       </div>
     </section>
 
+    <!-- ═══ IN DEN MEDIEN ═══ -->
+    <section class="section" id="medien" aria-labelledby="medien-title">
+      <div class="wrap">
+        <div class="head">
+          <h2 id="medien-title" data-reveal>In den Medien</h2>
+        </div>
+        <div class="press-teaser">
+          <article class="pt-card pt-lead" data-reveal>
+            <div class="photo-frame">
+              <img src="assets/img/presse/bwki-2026-015-800.webp" width="800" height="533" loading="lazy" decoding="async" alt="Vier Personen auf der Bühne vor der Leinwand mit dem Schriftzug Bundeswettbewerb Künstliche Intelligenz, eine Person hält einen Umschlag." />
+            </div>
+            <h3><a href="presse.html#bwki">Sonderpreis „No risk, no fun!“</a></h3>
+            <p>Beim Finale des Bundeswettbewerbs Künstliche Intelligenz in Tübingen, für besondere Leistungen im Projekt.</p>
+            <p class="pt-meta"><time datetime="2026-11-13">13. November 2026</time> <span class="credit">Foto: Bundeswettbewerb KI / Ale Zea</span></p>
+          </article>
+          <div class="pt-list">
+            <article class="pt-card" data-reveal style="--d:.06s">
+              <h3><a href="presse.html#ndr">NDR 1 Welle Nord und ndr.de</a></h3>
+              <p>„Dithmarscher Finalist im KI-Bundeswettbewerb“</p>
+              <p class="pt-meta"><time datetime="2026-11-13">13. November 2026</time></p>
+            </article>
+            <article class="pt-card" data-reveal style="--d:.12s">
+              <h3><a href="presse.html#mdr">Mitteldeutscher Rundfunk (MDR), Sachsenspiegel</a></h3>
+              <p>„KI-Tüftler aus Sachsen stellt medizinische Anwendung vor“</p>
+              <p class="pt-meta"><time datetime="2026-11-12">12. November 2026</time></p>
+            </article>
+            <article class="pt-card" data-reveal style="--d:.18s">
+              <h3><a href="presse.html#boyens">Boyens Medien</a></h3>
+              <p>„So will Albert Heruth mit KI die OP-Sterilisation im Krankenhaus verbessern“</p>
+              <p class="pt-meta"><time datetime="2026-09-05">5. September 2026</time></p>
+            </article>
+          </div>
+        </div>
+        <div class="pt-more" data-reveal>
+          <a class="btn btn-ghost" href="presse.html">Alle Berichte und Fotos</a>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══ NETZWERK ═══ -->
     <section class="section" id="netzwerk" style="padding-top:0">
       <div class="marquee" data-reveal>
@@ -281,19 +317,21 @@
           <div class="socials" data-socials></div>
         </div>
         <div class="footer-col">
-          <span class="mono">Seite</span>
-          <a href="#finale">Finale</a>
+          <span class="mono">Seiten</span>
+          <a href="#top">Startseite</a>
           <a href="presse.html">Presse</a>
+          <a href="kontakt.html">Kontakt</a>
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </div>
+        <div class="footer-col">
+          <span class="mono">Auf der Startseite</span>
+          <a href="#finale">Finale</a>
+          <a href="#medien">In den Medien</a>
           <a href="#film">Film</a>
           <a href="#anlage">Anlage</a>
           <a href="#stimme">Klinik</a>
           <a href="#team">Team</a>
-        </div>
-        <div class="footer-col">
-          <span class="mono">Rechtliches</span>
-          <a href="kontakt.html">Kontakt</a>
-          <a href="impressum.html">Impressum</a>
-          <a href="datenschutz.html">Datenschutz</a>
         </div>
       </div>
       <div class="footer-bottom">
