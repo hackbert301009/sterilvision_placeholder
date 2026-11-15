@@ -138,7 +138,6 @@ function initGsap() {
     });
   }
   gsap.from('[data-hero]', { y: 24, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1, delay: 0.55 });
-  gsap.from('.hero-rule', { scaleX: 0, duration: 1.4, ease: 'expo.out', delay: 0.8 });
 
   // Hero-Text beim Scrollen leicht nach oben und ausblenden
   gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'bottom bottom', end: 'bottom top', scrub: true } });
