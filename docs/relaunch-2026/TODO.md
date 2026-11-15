@@ -1,8 +1,16 @@
 # ToDos SterilVision Website
 
-Stand: 15.11.2026 (Redesign nach Branchenrecherche, siehe [RECHERCHE-BRANCHE-AEMP-2026.md](RECHERCHE-BRANCHE-AEMP-2026.md)). Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
+Stand: 15.11.2026 (helles Redesign zurückgenommen, Live-Design gilt; frühere Recherche zum Redesign: siehe [RECHERCHE-BRANCHE-AEMP-2026.md](RECHERCHE-BRANCHE-AEMP-2026.md)). Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
 
 Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheidung. Ein einzelnes "KI-Muster" ist kein Problem, die Häufung ist es ([Auswertung von 1.590 Landingpages](https://adriankrebs.ch/blog/design-slop/), [Anthropic: Frontend Aesthetics](https://platform.claude.com/cookbook/coding-prompting-for-frontend-aesthetics), [Anthropic Blog](https://claude.com/blog/improving-frontend-design-through-skills)).
+
+## Rücknahme 15.11.2026: zurück zum Live-Design
+
+- [x] Das helle Redesign wurde am 15.11.2026 auf Wunsch des Nutzers zurückgenommen. Startseite wieder exakt wie online (Stand `095c2dd`): dunkles Theme, GSAP-Reveals, SplitText-Headline, Lenis, Grain, Hintergrund-Icons, 3D-Partikelschere im Hero, Anlage-Videos als Kacheln
+- [x] Startseite nur ergänzt: Menüpunkt Presse (Kopf, Mobilmenü, Footer) und Sonderpreis „No risk, no fun!“ auf der BWKI-Karte mit Link zur Presse-Seite
+- [x] `presse.html` im dunklen Design mit Inhalt aus dem Redesign (BWKI-Sonderpreis, NDR, Mitteldeutscher Rundfunk (MDR), Boyens Medien, Vortrag, Gebrauchsmuster), Vollbildansicht über `assets/js/lightbox.js`
+- [x] Datenschutzerklärung nennt wieder GSAP, ScrollTrigger, SplitText, Lenis und three.js (alles lokal) und den ARD-Abschnitt mit Verweis auf die Seite Presse
+- Die Punkte unter „Redesign 15.11.2026“ und „Ganze Seite: KI-Look abbauen“ gelten damit nicht mehr für das Design, nur noch als Ideensammlung
 
 ## Erledigt (Branch `redesign/hero-ohne-ki-look`)
 

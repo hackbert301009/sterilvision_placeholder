@@ -7,18 +7,18 @@ Statisch (HTML, CSS, JS), kein Build-Schritt, gehostet über GitHub Pages.
 
 | Datei / Ordner | Inhalt |
 |---|---|
-| `index.html` | Startseite: Hero mit 3D-Modell, Instrumentenkreislauf und Ablauf in drei Schritten, Film, Stimmen aus der Praxis, Projektstand, Team, Einladung an AEMP-Fachleute |
-| `presse.html` | Presse: Übersicht mit Datum, BWKI-Sonderpreis, NDR, Mitteldeutscher Rundfunk (MDR), Boyens Medien, Vortrag, Gebrauchsmuster. Fotos mit Vollbildansicht. Neue Berichte oben in `.media-index` und als eigener Abschnitt eintragen. Fotocredit BWKI immer „Foto: Bundeswettbewerb KI / Ale Zea“ |
+| `index.html` | Startseite (Live-Design): Hero mit 3D-Partikelschere, Finale und Wettbewerbe mit Sonderpreis-Hinweis und Link zur Presse, BWKI-Film, Anlage-Videos als Kacheln, Klinikstimmen (WKK, UKSH), Team, Wegbegleiter |
+| `presse.html` | Presse im dunklen Design: Übersicht mit Datum, BWKI-Sonderpreis mit Fotos, NDR, Mitteldeutscher Rundfunk (MDR) mit Zwei-Klick-Video, Boyens Medien, Vortrag Juli 2026, Gebrauchsmuster, Kontakt-Aufruf. Alle Fotos mit Vollbildansicht. Neue Berichte oben in `.media-index` und als eigener Abschnitt eintragen. Fotocredit BWKI immer „Foto: Bundeswettbewerb KI / Ale Zea“ |
 | `kontakt.html` | Kontaktformular (Formspree) mit Einwilligung |
 | `impressum.html`, `datenschutz.html` | Rechtliches |
-| `styles.css` | Design: heller Grund, ein Akzent, ein Radius. Alle Farben und Abstände als Tokens in `:root` |
-| `script.js` | Menü, Ankerscrollen, Videos, Zwei-Klick-Video, Formular. Social-Links oben im Array `SOCIALS` |
-| `assets/js/hero3d.js` | 3D-Modell einer Edelstahl-Schere (three.js), drehbar, Foto als Rückfall |
-| `assets/js/lightbox.js` | Vollbildansicht für `figure[data-zoom]` mit `<dialog>` |
-| `assets/brand/` | Logo als Vektor (Farbe über CSS) |
-| `assets/fonts/` | Inter, Inter Display als woff2 (selbst gehostet) |
-| `assets/img/`, `assets/logos/`, `assets/video/` | Bilder (WebP), Logos, Videos |
-| `vendor/` | three.js 0.187.0 |
+| `styles.css` | Corporate Design (dunkel). Alle Farben, Schriften und Abstände als Tokens in `:root`. Regeln für die Presse-Seite und die Lightbox am Ende der Datei |
+| `script.js` | Smooth Scroll (Lenis), Animationen (GSAP, Reveals), Videos, Stimmen-Umschalter, Zwei-Klick-Video, Menü, Formular. Social-Links oben im Array `SOCIALS` |
+| `assets/js/hero3d.js` | 3D-Partikelschere mit Scanstrahl (three.js) |
+| `assets/js/lightbox.js` | Vollbildansicht für `figure[data-zoom]` mit `<dialog>`, Pfeiltasten innerhalb von `[data-gallery]` |
+| `assets/brand/` | Logo als Vektor: `sv-mark.svg`, `sv-wordmark.svg`, `sv-logo.svg` (Farbe über CSS) |
+| `assets/fonts/` | Inter, Inter Display, JetBrains Mono als woff2 (selbst gehostet) |
+| `assets/img/`, `assets/img/presse/`, `assets/logos/`, `assets/video/` | Bilder (WebP), Pressefotos, Partnerlogos, Videos (H.264, faststart, mit eingebranntem SterilVision-Wasserzeichen) |
+| `vendor/` | GSAP 3.15.1 (ScrollTrigger, SplitText), Lenis 1.3.27, three.js 0.187.0 |
 | `docs/relaunch-2026/` | Planung, Recherchen, ToDos |
 
 ## Datenschutz by Design
@@ -33,7 +33,7 @@ Wenig Text. Keine Gedankenstriche (– oder —) als Satzzeichen, stattdessen Pu
 ```bash
 python -m http.server 8000
 ```
-Dann http://localhost:8000 öffnen. (Direktes Öffnen der Datei zeigt statt 3D-Modell das Foto, weil ES-Module einen Server brauchen.)
+Dann http://localhost:8000 öffnen. (Direktes Öffnen der Datei zeigt statt 3D-Modell nur das Logo, weil ES-Module einen Server brauchen.)
 
 ## Deployment (GitHub Pages)
 Settings, Pages, Source: Deploy from a branch, Branch `main`, Ordner `/ (root)`.
