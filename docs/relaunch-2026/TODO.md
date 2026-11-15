@@ -49,7 +49,8 @@ Konzept und Quellen: [PRESSE-VERKNUEPFUNG-2026.md](PRESSE-VERKNUEPFUNG-2026.md)
 - [ ] Formulierungen von einer AEMP-Fachkraft gegenlesen lassen
 - [ ] Datum Boyens prüfen: online 05.09.2026, Vorschau des Teams zeigt 04.09.2026
 - [ ] Eigenes Foto der Schere aus der Prüfzelle als 3D-Rückfallbild oder echtes Modell (GLB) statt gezeichneter Form
-- [ ] Ungenutzt: `assets/fonts/JetBrainsMono-Medium.woff2`, `assets/logos/boyens.webp`, `bwki.webp`, `jugend-forscht.webp`, `fh-westkueste.webp`, `wkk.webp`, `eyespec.webp`
+- [x] Alte Schriftdateien (Inter, Inter Display, JetBrains Mono) gelöscht (15.11.2026)
+- [ ] Ungenutzt: `assets/logos/boyens.webp`, `bwki.webp`, `jugend-forscht.webp`, `fh-westkueste.webp`, `wkk.webp`, `eyespec.webp`
 
 ## Neue Inhalte (warten auf Material)
 
@@ -64,7 +65,9 @@ Konzept und Quellen: [PRESSE-VERKNUEPFUNG-2026.md](PRESSE-VERKNUEPFUNG-2026.md)
 
 ## Hero, nächste Schritte
 
-- [ ] **Headline-Schrift bewusst wählen** (Entscheidung offen): Inter nur noch für Fließtext. Kandidaten mit technischer oder redaktioneller Anmutung, selbst gehostet als WOFF2. Keine Zweitdefaults wie Space Grotesk, Geist, Instrument Serif ([Slop-Muster](https://www.925studios.co/blog/ai-slop-design-tells), [Font Best Practices](https://web.dev/articles/font-best-practices))
+- [x] **Hero-Feinschliff und neue Schrift** (15.11.2026): Archivo Variable für die ganze Website, Hero mit zweizeiliger Headline, Filmknopf und Faktenzeile, Details in [HERO-FEINSCHLIFF-2026.md](HERO-FEINSCHLIFF-2026.md)
+- [ ] Hero: Headline "für jedes Instrument" bewusst bestätigen, E-Mail-Adresse unter sterilvision.de einrichten, Meta-Beschreibung an den neuen Ton anpassen
+- [x] **Headline-Schrift bewusst wählen** (erledigt 15.11.2026 mit Archivo, früherer Stand: Inter nur noch für Fließtext). Kandidaten mit technischer oder redaktioneller Anmutung, selbst gehostet als WOFF2. Keine Zweitdefaults wie Space Grotesk, Geist, Instrument Serif ([Slop-Muster](https://www.925studios.co/blog/ai-slop-design-tells), [Font Best Practices](https://web.dev/articles/font-best-practices))
 - [ ] Video als WebM (AV1/VP9) vor MP4 ausliefern, Tonspur entfernen (`ffmpeg -an`), Poster als AVIF/WebP ([Video-Performance](https://web.dev/learn/performance/video-performance))
 - [ ] Ein Satz zum Stand: Schülerforschungsprojekt, Prototyp, kein zugelassenes Medizinprodukt ([Vertrauen in regulierten Branchen](https://www.kunocreative.com/blog/building-trust-regulated-industry-web-design-best-practices-medical-devices))
 - [ ] Optional: echtes Kamerabild mit Befundmarkierung ("Proteinrest erkannt") als zweites Motiv, nur mit echten Daten

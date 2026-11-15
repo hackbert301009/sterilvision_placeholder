@@ -159,7 +159,7 @@ function init(THREE) {
   const dust = new THREE.Points(dgeo, new THREE.PointsMaterial({ color: 0x4a9fe0, size: 0.035, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending }));
   scene.add(dust);
 
-  /* Layout: Desktop rechts oben neben dem Text, Mobil oben mittig */
+  /* Layout: Desktop rechts über der Headline (erste Zeile steht links neben den Griffringen), Mobil oben mittig */
   let W = 0, H = 0;
   function resize() {
     const nw = host.clientWidth, nh = host.clientHeight;
@@ -171,9 +171,9 @@ function init(THREE) {
     const narrow = W < 860;
     const visH = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
     const visW = visH * camera.aspect;
-    const s = narrow ? Math.min(1, (visW * 0.84) / 8) : Math.min(1, visW * 0.5 / 8, visH * 0.72 / 8);
+    const s = narrow ? Math.min(1, (visW * 0.84) / 8) : Math.min(1, visW * 0.5 / 8, visH * 0.80 / 8);
     tool.scale.setScalar(s);
-    rig.position.set(narrow ? 0 : visW * 0.27, narrow ? 1.5 : visH * 0.16, 0);
+    rig.position.set(narrow ? 0 : visW * 0.26, narrow ? 1.5 : visH * 0.21, 0);
   }
   resize();
   let rT; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(resize, 150); });
@@ -185,8 +185,9 @@ function init(THREE) {
   /* Scroll: Partikel lösen sich beim Verlassen des Heros */
   let scrollP = 0;
   const hero = document.getElementById('hero');
-  let heroH = hero.offsetHeight;
-  addEventListener('resize', () => { heroH = hero.offsetHeight; });
+  // Strecke an der Canvas-Höhe messen: mobil ist der Hero höher als die Canvas
+  let heroH = host.clientHeight || hero.offsetHeight;
+  addEventListener('resize', () => { heroH = host.clientHeight || hero.offsetHeight; });
   const onScroll = () => { scrollP = Math.min(1, Math.max(0, scrollY / (heroH * 0.9))); };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 

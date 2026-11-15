@@ -124,18 +124,24 @@ function initGsap() {
   // Mobile Adressleiste löst kein Neuberechnen aller Trigger aus
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  // Hero-Headline Zeile für Zeile, Wort für Wort
+  // Hero-Headline Zeile für Zeile, Wort für Wort (erst wenn die Schrift geladen ist)
   const h1 = $('[data-split]');
   if (h1 && window.SplitText) {
     gsap.registerPlugin(SplitText);
-    const split = new SplitText(h1, { type: 'words,lines', linesClass: 'line', mask: 'lines' });
-    // Nach der Intro wieder echter Text, damit die Zeilen bei Größenänderung sauber umbrechen
-    gsap.from(split.words, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.06, delay: 0.2, onComplete: () => split.revert() });
+    gsap.set(h1, { autoAlpha: 0 });
+    const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    Promise.race([fontsReady, new Promise((r) => setTimeout(r, 1200))]).then(() => {
+      const split = new SplitText(h1, { type: 'words,lines', linesClass: 'line', mask: 'lines' });
+      gsap.set(h1, { autoAlpha: 1 });
+      // Nach dem Intro wieder echter Text, damit die Zeilen bei Größenänderung sauber umbrechen
+      gsap.from(split.words, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.06, delay: 0.2, onComplete: () => split.revert() });
+    });
   }
   gsap.from('[data-hero]', { y: 24, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: 0.1, delay: 0.55 });
+  gsap.from('.hero-rule', { scaleX: 0, duration: 1.4, ease: 'expo.out', delay: 0.8 });
 
   // Hero-Text beim Scrollen leicht nach oben und ausblenden
-  gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero-inner', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'bottom bottom', end: 'bottom top', scrub: true } });
 
   // Finale-Karten: Licht folgt der Maus
   $$('.finale-card').forEach((c) => c.addEventListener('pointermove', (e) => {

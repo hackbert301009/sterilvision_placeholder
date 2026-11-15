@@ -4,6 +4,7 @@ Alles zur Überarbeitung der Startseite an einem Ort.
 
 | Datei | Inhalt |
 |---|---|
+| [HERO-FEINSCHLIFF-2026.md](HERO-FEINSCHLIFF-2026.md) | 15.11.2026: neuer Hero (Headline, Filmknopf, Faktenzeile) und Schrift Archivo, mit Quellen und Lizenz |
 | [TODO.md](TODO.md) | Offene und erledigte Aufgaben mit direkten Quellen-Links |
 | [RECHERCHE-BRANCHE-AEMP-2026.md](RECHERCHE-BRANCHE-AEMP-2026.md) | Recherche 15.11.2026: Herstellerseiten der Sterilgutbranche, KI-Look im Code, Zielgruppe AEMP, Presse geprüft |
 | [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) | Vollständige Recherche (14.11.2026): KI-Look erkennen, glaubwürdiges Design, moderne Webtechnik mit Browser-Support, Performance, Barrierefreiheit, Presse und Preise |
