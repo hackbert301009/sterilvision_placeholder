@@ -1,6 +1,6 @@
 # ToDos SterilVision Website
 
-Stand: 15.11.2026. Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
+Stand: 15.11.2026 (Redesign nach Branchenrecherche, siehe [RECHERCHE-BRANCHE-AEMP-2026.md](RECHERCHE-BRANCHE-AEMP-2026.md)). Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
 
 Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheidung. Ein einzelnes "KI-Muster" ist kein Problem, die Häufung ist es ([Auswertung von 1.590 Landingpages](https://adriankrebs.ch/blog/design-slop/), [Anthropic: Frontend Aesthetics](https://platform.claude.com/cookbook/coding-prompting-for-frontend-aesthetics), [Anthropic Blog](https://claude.com/blog/improving-frontend-design-through-skills)).
 
@@ -14,6 +14,20 @@ Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheid
 - [x] Lenis Smooth Scroll auf allen Seiten entfernt, natives Scrollen, weiches Ankerscrollen nur ohne reduzierte Bewegung ([Lenis und Barrierefreiheit](https://frontendchecklist.io/rules/accessibility/scrolljacking))
 - [x] Pause-Button am Hero-Video ([WCAG 2.2.2 Pause, Stop, Hide](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html)), Video pausiert außerhalb des Sichtbereichs, bei reduzierter Bewegung und im Datensparmodus nur Standbild
 - [x] Poster des Videos mit `fetchpriority="high"` vorgeladen ([Fetch Priority](https://web.dev/articles/fetch-priority), [Video und LCP](https://www.debugbear.com/blog/optimize-video-lcp))
+
+## Redesign 15.11.2026 (erledigt)
+
+- [x] Helles Design nach Branchenstandard (Aesculap, Getinge, MMM, SteelcoBelimed), ein Akzent, ein Radius, keine Deko-Ebenen, keine Reveal-Animationen, GSAP und Lenis entfernt
+- [x] Navigation: Sichtprüfung, Prüfzelle, Praxis, Team, Presse und Button Kontakt, auf allen Seiten gleich
+- [x] 3D-Modell zurück im Hero, als Edelstahl-Schere statt Partikeln, drehbar, Foto als Rückfall
+- [x] Instrumentenkreislauf mit „Prüfung und Verpackung“, Ablauf Greifen, Prüfen, Entscheiden mit echten Videos
+- [x] Stimmen aus der Praxis nebeneinander statt Tabs, Hinweis „Unterstützung ist keine Validierung“
+- [x] Projektstand mit Status (kein Medizinprodukt), Gebrauchsmuster, Wettbewerben
+- [x] Presse: Vollbildansicht, NDR-Bildschirmfoto, Boyens Medien, Vortrag Juli 2026, Gebrauchsmuster-Urkunde, Foto „Das Team auf der Bühne“ entfernt, Einleitungssatz entfernt
+- [ ] Formulierungen von einer AEMP-Fachkraft gegenlesen lassen
+- [ ] Datum Boyens prüfen: online 05.09.2026, Vorschau des Teams zeigt 04.09.2026
+- [ ] Eigenes Foto der Schere aus der Prüfzelle als 3D-Rückfallbild oder echtes Modell (GLB) statt gezeichneter Form
+- [ ] Ungenutzt: `assets/fonts/JetBrainsMono-Medium.woff2`, `assets/logos/boyens.webp`, `bwki.webp`, `jugend-forscht.webp`, `fh-westkueste.webp`, `wkk.webp`, `eyespec.webp`
 
 ## Neue Inhalte (warten auf Material)
 

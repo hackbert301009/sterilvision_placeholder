@@ -1,12 +1,12 @@
 /* ───────────────────────────────────────────────────────────
    STERILVISION · Hero 3D
-   Eine chirurgische Schere aus Partikeln. Ein Scanstrahl fährt
-   darüber, färbt geprüfte Bereiche cyan und markiert einen Befund.
-   three.js wird lokal geladen (vendor/), kein Drittanbieter.
+   Eine chirurgische Schere als Edelstahl-Modell, wie ein
+   Produktfoto im Studio. Ruhige Pendelbewegung, per Ziehen
+   drehbar. Keine Partikel, kein Leuchten.
+   three.js liegt lokal in vendor/, kein Drittanbieter.
    ─────────────────────────────────────────────────────────── */
 
-const host = document.getElementById('hero-canvas');
-const reticle = document.getElementById('reticle');
+const host = document.getElementById('hero-3d');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function webglOk() {
@@ -14,247 +14,201 @@ function webglOk() {
   catch { return false; }
 }
 
-// Sehr schwache Geräte oder Datensparmodus: statische Bildmarke statt 3D
+// Datensparmodus oder sehr schwache Geräte: das Foto bleibt stehen
 const conn = navigator.connection || {};
 const lowEnd = conn.saveData || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
 
 if (host && webglOk() && !lowEnd) {
-  // Erst nach dem ersten Paint laden, damit Text und Layout sofort stehen
   const start = () => import('../../vendor/three.module.min.js').then(init).catch(() => {});
-  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 600 }); else setTimeout(start, 120);
+  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 800 }); else setTimeout(start, 150);
 }
 
-/* Silhouette einer Schere auf ein Offscreen-Canvas zeichnen und abtasten */
-function sampleScissors(count) {
-  const W = 1024, H = 512;
-  const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const g = c.getContext('2d');
-  g.fillStyle = '#fff'; g.strokeStyle = '#fff'; g.lineCap = 'round'; g.lineJoin = 'round';
+/* Umriss der Schere in Pixeln (Zeichenfläche 1024 × 512) */
+const PX = 1024, PY = 512, S = 8 / PX;
+const P = (x, y) => [(x - PX / 2) * S, -(y - PY / 2) * S];
 
-  // Griffringe
-  g.lineWidth = 20;
-  g.beginPath(); g.ellipse(150, 176, 72, 58, -0.25, 0, Math.PI * 2); g.stroke();
-  g.beginPath(); g.ellipse(150, 338, 72, 58, 0.25, 0, Math.PI * 2); g.stroke();
-  // Schenkel zum Gelenk
-  g.lineWidth = 24;
-  g.beginPath(); g.moveTo(214, 204); g.quadraticCurveTo(380, 236, 520, 262); g.stroke();
-  g.beginPath(); g.moveTo(214, 310); g.quadraticCurveTo(380, 280, 520, 250); g.stroke();
-  // Klingen, leicht geöffnet und spitz zulaufend
-  g.beginPath(); g.moveTo(505, 244); g.quadraticCurveTo(760, 226, 972, 236); g.lineTo(975, 241); g.quadraticCurveTo(760, 252, 520, 268); g.closePath(); g.fill();
-  g.beginPath(); g.moveTo(520, 246); g.quadraticCurveTo(760, 262, 975, 276); g.lineTo(972, 281); g.quadraticCurveTo(760, 288, 505, 270); g.closePath(); g.fill();
-  // Gelenkschraube
-  g.beginPath(); g.arc(518, 257, 22, 0, Math.PI * 2); g.fill();
+function shapes(THREE) {
+  const V = (x, y) => new THREE.Vector2(...P(x, y));
 
-  const data = g.getImageData(0, 0, W, H).data;
-  const px = [];
-  for (let y = 0; y < H; y += 2) for (let x = 0; x < W; x += 2) if (data[(y * W + x) * 4 + 3] > 128) px.push(x, y);
+  // Griffring: Ellipse mit Loch
+  const ring = (cx, cy, rot) => {
+    const [x, y] = P(cx, cy);
+    const s = new THREE.Shape();
+    s.absellipse(x, y, 82 * S, 68 * S, 0, Math.PI * 2, false, -rot);
+    const h = new THREE.Path();
+    h.absellipse(x, y, 61 * S, 47 * S, 0, Math.PI * 2, true, -rot);
+    s.holes.push(h);
+    return s;
+  };
 
-  const n = Math.min(count, px.length / 2);
-  const pos = new Float32Array(n * 3), rnd = new Float32Array(n * 3), size = new Float32Array(n), defect = new Float32Array(n);
-  const S = 8 / W; // Breite ca. 8 Einheiten
-  const D = { x: 790, y: 270, r: 26 }; // Befundstelle auf der unteren Klinge
-  for (let i = 0; i < n; i++) {
-    const k = (Math.random() * (px.length / 2)) | 0;
-    const x = px[k * 2] + Math.random() * 2, y = px[k * 2 + 1] + Math.random() * 2;
-    pos[i * 3] = (x - W / 2) * S;
-    pos[i * 3 + 1] = -(y - H / 2) * S;
-    pos[i * 3 + 2] = (Math.random() - 0.5) * 0.14;
-    // Startpunkt der Intro-Animation: weit verstreut auf einer Kugelschale
-    const th = Math.random() * Math.PI * 2, ph = Math.acos(Math.random() * 2 - 1), r = 6 + Math.random() * 6;
-    rnd[i * 3] = r * Math.sin(ph) * Math.cos(th); rnd[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th); rnd[i * 3 + 2] = r * Math.cos(ph);
-    size[i] = 0.6 + Math.random() * 1.2;
-    const dx = x - D.x, dy = y - D.y;
-    defect[i] = dx * dx + dy * dy < D.r * D.r ? 1 : 0;
-  }
-  return { pos, rnd, size, defect, n, defectLocal: [(D.x - W / 2) * S, -(D.y - H / 2) * S, 0] };
+  // Schenkel: gebogenes Band mit Breite w entlang einer quadratischen Kurve
+  const band = (a, c, b, w) => {
+    const curve = new THREE.QuadraticBezierCurve(V(...a), V(...c), V(...b));
+    const pts = curve.getSpacedPoints(32);
+    const left = [], right = [];
+    pts.forEach((p, i) => {
+      const t = curve.getTangentAt(i / 32);
+      const n = new THREE.Vector2(-t.y, t.x).multiplyScalar((w / 2) * S);
+      left.push(p.clone().add(n)); right.push(p.clone().sub(n));
+    });
+    return new THREE.Shape([...left, ...right.reverse()]);
+  };
+
+  // Klinge: spitz zulaufend
+  const blade = (pts) => {
+    const s = new THREE.Shape();
+    s.moveTo(...P(...pts[0]));
+    s.quadraticCurveTo(...P(...pts[1]), ...P(...pts[2]));
+    s.lineTo(...P(...pts[3]));
+    s.quadraticCurveTo(...P(...pts[4]), ...P(...pts[5]));
+    s.closePath();
+    return s;
+  };
+
+  // Hälfte A: oberer Ring, Schenkel nach unten, untere Klinge
+  const A = [
+    ring(150, 176, -0.25),
+    band([206, 200], [380, 236], [524, 262], 26),
+    blade([[520, 246], [760, 262], [975, 276], [972, 281], [760, 290], [505, 272]]),
+  ];
+  // Hälfte B: unterer Ring, Schenkel nach oben, obere Klinge
+  const B = [
+    ring(150, 338, 0.25),
+    band([206, 314], [380, 280], [524, 252], 26),
+    blade([[505, 242], [760, 224], [972, 236], [975, 241], [760, 254], [520, 268]]),
+  ];
+  return { A, B };
+}
+
+/* Studio-Umgebung für die Spiegelungen: heller Raum mit drei Lichtflächen */
+function studioEnv(THREE, renderer) {
+  const env = new THREE.Scene();
+  const room = new THREE.Mesh(new THREE.BoxGeometry(20, 12, 20), new THREE.MeshBasicMaterial({ color: 0x6f7780, side: THREE.BackSide }));
+  env.add(room);
+  const panel = (w, h, x, y, z, k) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(k, k, k), side: THREE.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
+  };
+  panel(12, 3, 0, 5.5, 0, 5);      // Deckenlicht
+  panel(4, 8, -9, 1, 3, 3.2);      // Softbox links
+  panel(3, 6, 9, 0, -4, 1.8);      // Kante rechts
+  const pm = new THREE.PMREMGenerator(renderer);
+  const tex = pm.fromScene(env, 0.035).texture;
+  pm.dispose();
+  return tex;
 }
 
 function init(THREE) {
-  const mobile = innerWidth < 760;
-  const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'default' });
-  let pr = Math.min(devicePixelRatio, mobile ? 1.25 : 1.5);
-  renderer.setPixelRatio(pr);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'default' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.NeutralToneMapping || THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+  renderer.domElement.setAttribute('role', 'img');
+  renderer.domElement.setAttribute('aria-label', '3D-Modell einer chirurgischen Schere aus Edelstahl, zum Drehen ziehen');
   host.appendChild(renderer.domElement);
-  document.documentElement.classList.add('webgl');
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  camera.position.set(0, 0, 11);
+  scene.environment = studioEnv(THREE, renderer);
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 0, 13);
 
-  const rig = new THREE.Group();      // Maus-Parallaxe und Scroll
-  const tool = new THREE.Group();     // die Schere selbst
-  rig.add(tool); scene.add(rig);
-  tool.rotation.set(-0.42, 0.28, 0.32);
+  const steel = new THREE.MeshPhysicalMaterial({ color: 0xc6ccd3, metalness: 1, roughness: 0.32 });
+  const ext = { depth: 0.08, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.025, bevelSegments: 4, curveSegments: 64 };
+  const { A, B } = shapes(THREE);
 
-  /* Partikel der Schere */
-  const P = sampleScissors(mobile ? 6500 : 13000);
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(P.pos, 3));
-  geo.setAttribute('aRandom', new THREE.BufferAttribute(P.rnd, 3));
-  geo.setAttribute('aSize', new THREE.BufferAttribute(P.size, 1));
-  geo.setAttribute('aDefect', new THREE.BufferAttribute(P.defect, 1));
-
-  const uniforms = {
-    uTime: { value: 0 }, uAssemble: { value: reduce ? 1 : 0 }, uScan: { value: -6 }, uExplode: { value: 0 },
-    uPR: { value: renderer.getPixelRatio() }, uMark: { value: 0 },
-    cBase: { value: new THREE.Color('#4a8fd6') }, cScan: { value: new THREE.Color('#35d6e8') },
-    cDone: { value: new THREE.Color('#9cc4f5') }, cBad: { value: new THREE.Color('#ff4d61') },
+  const tool = new THREE.Group();
+  const half = (list, z) => {
+    const g = new THREE.Group();
+    list.forEach((s) => g.add(new THREE.Mesh(new THREE.ExtrudeGeometry(s, ext), steel)));
+    g.position.z = z; tool.add(g);
   };
-  const mat = new THREE.ShaderMaterial({
-    uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-    vertexShader: /* glsl */`
-      uniform float uTime, uAssemble, uScan, uExplode, uPR, uMark;
-      uniform vec3 cBase, cScan, cDone, cBad;
-      attribute vec3 aRandom; attribute float aSize; attribute float aDefect;
-      varying vec3 vColor; varying float vAlpha;
-      float ease(float t){ return 1.0 - pow(1.0 - clamp(t,0.0,1.0), 3.0); }
-      void main(){
-        float delay = fract(sin(dot(aRandom.xy, vec2(12.9898,78.233))) * 43758.5453) * 0.35;
-        float a = ease((uAssemble - delay) / (1.0 - 0.35));
-        vec3 p = mix(aRandom, position, a);
-        p += aRandom * 0.18 * uExplode * uExplode;
-        p.z += sin(uTime * 1.3 + position.x * 2.0) * 0.03 * a;
+  half(A, 0.07);
+  half(B, -0.09);
+  // Gelenkschraube
+  const [jx, jy] = P(518, 257);
+  const screw = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.36, 48), new THREE.MeshPhysicalMaterial({ color: 0xb9c0c8, metalness: 1, roughness: 0.22 }));
+  screw.rotation.x = Math.PI / 2; screw.position.set(jx, jy, 0);
+  tool.add(screw);
 
-        float d = p.x - uScan;
-        float beam = exp(-d * d * 18.0);
-        float done = smoothstep(0.05, -0.05, d);
-        vec3 col = mix(cBase, cDone, done * 0.55);
-        col = mix(col, cBad, aDefect * done * uMark);
-        col = mix(col, cScan, beam);
-        vColor = col;
-        vAlpha = (0.6 + beam * 0.9 + aDefect * done * uMark * 0.6) * (0.35 + 0.65 * a);
+  // Ins Zentrum rücken und in eine ruhige 3/4-Ansicht drehen
+  const box = new THREE.Box3().setFromObject(tool);
+  const mid = box.getCenter(new THREE.Vector3());
+  tool.position.set(-mid.x, -mid.y, 0);
+  const pivot = new THREE.Group();
+  pivot.add(tool);
+  pivot.rotation.set(-0.5, 0.35, 0.42);
+  scene.add(pivot);
 
-        vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        gl_Position = projectionMatrix * mv;
-        gl_PointSize = aSize * uPR * (1.0 + beam * 1.6 + aDefect * done * uMark) * (26.0 / -mv.z);
-      }`,
-    fragmentShader: /* glsl */`
-      varying vec3 vColor; varying float vAlpha;
-      void main(){
-        float r = length(gl_PointCoord - 0.5);
-        if (r > 0.5) discard;
-        gl_FragColor = vec4(vColor, vAlpha * smoothstep(0.5, 0.0, r));
-      }`,
-  });
-  tool.add(new THREE.Points(geo, mat));
-
-  /* Scanstrahl: schmale helle Linie plus weicher Lichtschleier */
-  const beamMat = (w, op) => new THREE.ShaderMaterial({
-    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-    uniforms: { uOp: { value: op }, uFade: { value: 0 } },
-    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-    fragmentShader: `uniform float uOp, uFade; varying vec2 vUv;
-      void main(){ float x = 1.0 - abs(vUv.x - 0.5) * 2.0; float y = smoothstep(0.0, 0.25, vUv.y) * smoothstep(1.0, 0.75, vUv.y);
-      gl_FragColor = vec4(0.21, 0.84, 0.91, pow(x, ${w}) * y * uOp * uFade); }`,
-  });
-  const beamCore = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 4.6), beamMat('2.0', 0.95));
-  const beamGlow = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 4.6), beamMat('3.0', 0.22));
-  tool.add(beamGlow, beamCore);
-
-  /* Schwebender Staub im Raum */
-  const dustN = mobile ? 260 : 600;
-  const dpos = new Float32Array(dustN * 3);
-  for (let i = 0; i < dustN; i++) { dpos[i * 3] = (Math.random() - 0.5) * 26; dpos[i * 3 + 1] = (Math.random() - 0.5) * 16; dpos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 3; }
-  const dgeo = new THREE.BufferGeometry(); dgeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
-  const dust = new THREE.Points(dgeo, new THREE.PointsMaterial({ color: 0x4a9fe0, size: 0.035, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending }));
-  scene.add(dust);
-
-  /* Layout: Desktop rechts oben neben dem Text, Mobil oben mittig */
+  /* Größe an die Fläche anpassen */
   let W = 0, H = 0;
   function resize() {
     const nw = host.clientWidth, nh = host.clientHeight;
-    // Mobile Adressleiste: kleine Höhenänderungen ignorieren, Canvas nicht neu anlegen
-    if (nw === W && Math.abs(nh - H) < 120) return;
+    if (!nw || !nh || (nw === W && nh === H)) return;
     W = nw; H = nh;
     renderer.setSize(W, H, false);
     camera.aspect = W / H; camera.updateProjectionMatrix();
-    const narrow = W < 860;
     const visH = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
     const visW = visH * camera.aspect;
-    const s = narrow ? Math.min(1, (visW * 0.84) / 8) : Math.min(1, visW * 0.5 / 8, visH * 0.72 / 8);
-    tool.scale.setScalar(s);
-    rig.position.set(narrow ? 0 : visW * 0.27, narrow ? 1.5 : visH * 0.16, 0);
+    pivot.scale.setScalar(Math.min((visW * 1.0) / 8, (visH * 1.6) / 8));
+    render();
   }
-  resize();
-  let rT; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(resize, 150); });
 
-  /* Maus und Gyro-freie Parallaxe */
-  const target = { x: 0, y: 0 }, cur = { x: 0, y: 0 };
-  addEventListener('pointermove', (e) => { target.x = e.clientX / innerWidth - 0.5; target.y = e.clientY / innerHeight - 0.5; }, { passive: true });
+  /* Drehen per Ziehen (Maus und Touch), auf Touch nur waagerecht, damit Scrollen frei bleibt */
+  const rot = { x: 0, y: 0 }, goal = { x: 0, y: 0 };
+  let drag = null, idle = 0;
+  const el = renderer.domElement;
+  el.addEventListener('pointerdown', (e) => {
+    drag = { x: e.clientX, y: e.clientY, rx: goal.x, ry: goal.y };
+    el.setPointerCapture(e.pointerId);
+    host.classList.add('dragging');
+    wake();
+  });
+  el.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    goal.y = drag.ry + (e.clientX - drag.x) * 0.01;
+    if (e.pointerType !== 'touch') goal.x = Math.max(-0.6, Math.min(0.6, drag.rx + (e.clientY - drag.y) * 0.006));
+    wake();
+  });
+  const end = () => { drag = null; idle = performance.now(); host.classList.remove('dragging'); };
+  el.addEventListener('pointerup', end);
+  el.addEventListener('pointercancel', end);
 
-  /* Scroll: Partikel lösen sich beim Verlassen des Heros */
-  let scrollP = 0;
-  const hero = document.getElementById('hero');
-  let heroH = hero.offsetHeight;
-  addEventListener('resize', () => { heroH = hero.offsetHeight; });
-  const onScroll = () => { scrollP = Math.min(1, Math.max(0, scrollY / (heroH * 0.9))); };
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  /* Tastatur: Pfeiltasten drehen, Pos1 setzt zurück */
+  host.addEventListener('keydown', (e) => {
+    const k = e.key;
+    if (k === 'ArrowLeft') goal.y -= 0.25; else if (k === 'ArrowRight') goal.y += 0.25;
+    else if (k === 'ArrowUp') goal.x = Math.max(-0.6, goal.x - 0.15); else if (k === 'ArrowDown') goal.x = Math.min(0.6, goal.x + 0.15);
+    else if (k === 'Home') { goal.x = 0; goal.y = 0; } else return;
+    e.preventDefault(); idle = performance.now(); wake();
+  });
 
-  /* Nur rendern, wenn sichtbar */
+  const reset = document.querySelector('[data-3d-reset]');
+  if (reset) reset.addEventListener('click', () => { goal.x = 0; goal.y = 0; idle = performance.now(); wake(); });
+
+  /* Nur rendern, wenn sichtbar und etwas passiert */
   let visible = true, raf = 0;
-  const wake = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame); };
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; wake(); }).observe(hero);
-  document.addEventListener('visibilitychange', wake);
-
-  /* Adaptive Qualität: misst die ersten Sekunden und senkt bei Bedarf Auflösung und Partikel */
-  let fN = 0, fSum = 0, fLast = 0, tuned = false;
-
-  const v3 = new THREE.Vector3();
-  const CYCLE = 6.5;          // Sekunden pro Scan
   const t0 = performance.now();
-
+  function render() { renderer.render(scene, camera); }
+  function wake() { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame); }
   function frame(now) {
     raf = 0;
-    if (!visible || document.hidden) return;   // Schleife ruht, bis die Szene wieder sichtbar ist
-    raf = requestAnimationFrame(frame);
-    if (!tuned && fLast) {
-      fSum += now - fLast; fN++;
-      if (fN === 90) {
-        tuned = true;
-        const avg = fSum / fN;
-        if (avg > 22) { pr = 1; renderer.setPixelRatio(pr); uniforms.uPR.value = pr; W = 0; resize(); geo.setDrawRange(0, Math.floor(P.n * 0.6)); }
-        else if (avg > 18 && pr > 1) { pr = Math.max(1, pr - 0.25); renderer.setPixelRatio(pr); uniforms.uPR.value = pr; W = 0; resize(); }
-      }
-    }
-    fLast = now;
-    const t = (performance.now() - t0) / 1000;
-    uniforms.uTime.value = t;
-
-    // Intro: Partikel fliegen zur Schere zusammen
-    if (!reduce) uniforms.uAssemble.value = Math.min(1.35, (performance.now() - t0) / 2600);
-
-    // Scan-Zyklus startet, sobald die Schere steht
-    const st = Math.max(0, t - 2.2);
-    const ph = (st % CYCLE) / CYCLE;
-    const sweep = Math.min(1, ph / 0.62);
-    const sx = -4.6 + sweep * 9.2;
-    uniforms.uScan.value = st > 0 ? sx : -6;
-    const fadeBeam = st > 0 ? Math.min(1, ph * 12) * (ph < 0.62 ? 1 : Math.max(0, 1 - (ph - 0.62) * 8)) : 0;
-    beamCore.material.uniforms.uFade.value = fadeBeam;
-    beamGlow.material.uniforms.uFade.value = fadeBeam;
-    beamCore.position.x = beamGlow.position.x = sx;
-
-    // Befund aufleuchten lassen, wenn der Strahl die Stelle passiert
-    const hit = st > 0 && sx > P.defectLocal[0];
-    const fadeOut = ph > 0.93 ? 0 : 1;
-    uniforms.uMark.value += (((hit ? 1 : 0) * fadeOut) - uniforms.uMark.value) * 0.12;
-
-    uniforms.uExplode.value = scrollP * 3.0;
-
-    cur.x += (target.x - cur.x) * 0.05; cur.y += (target.y - cur.y) * 0.05;
-    rig.rotation.y = cur.x * 0.5 + Math.sin(t * 0.25) * 0.06;
-    rig.rotation.x = cur.y * 0.35 + scrollP * 0.4;
-    dust.rotation.y = t * 0.015;
-
-    renderer.render(scene, camera);
-
-    // Fadenkreuz am Befund positionieren
-    if (reticle) {
-      v3.set(...P.defectLocal).applyMatrix4(tool.matrixWorld).project(camera);
-      reticle.style.left = `${(v3.x * 0.5 + 0.5) * W}px`;
-      reticle.style.top = `${(-v3.y * 0.5 + 0.5) * H}px`;
-      reticle.classList.toggle('on', hit && fadeOut === 1 && scrollP < 0.3 && uniforms.uAssemble.value > 1);
-    }
+    // Ruhiges Pendeln, wenn niemand dreht (nicht bei reduzierter Bewegung)
+    const sway = !reduce && !drag && now - idle > 2500;
+    const t = (now - t0) / 1000;
+    const swayY = sway ? Math.sin(t * 0.35) * 0.32 : 0;
+    const k = reduce ? 1 : 0.09;
+    rot.x += (goal.x - rot.x) * k;
+    rot.y += (goal.y + swayY - rot.y) * k;
+    pivot.rotation.set(-0.5 + rot.x, 0.35 + rot.y, 0.42);
+    render();
+    const moving = Math.abs(goal.x - rot.x) > 0.0005 || Math.abs(goal.y + swayY - rot.y) > 0.0005;
+    if (visible && !document.hidden && (sway || drag || moving)) raf = requestAnimationFrame(frame);
   }
+
+  new ResizeObserver(resize).observe(host);
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; wake(); }).observe(host);
+  document.addEventListener('visibilitychange', wake);
+  resize();
+  host.classList.add('ready');
   wake();
 }

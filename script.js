@@ -21,7 +21,6 @@ const ICONS = {
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const hasGsap = () => window.gsap && window.ScrollTrigger;
 
 /* ── Socials und Jahr ───────────────────────────────────── */
 $$('[data-socials]').forEach((wrap) => {
@@ -50,26 +49,6 @@ $$('a[href^="#"]').forEach((a) => {
   });
 });
 
-/* ── Header: Hintergrund ab Scroll, versteckt beim Runterscrollen ── */
-(() => {
-  const h = $('#site-header');
-  if (!h) return;
-  let last = 0, ticking = false, sc = null, hid = null;
-  const upd = () => {
-    ticking = false;
-    const y = scrollY;
-    const s = y > 10;
-    let hd = hid;
-    if (y > 600 && y > last + 4 && !document.body.classList.contains('menu-open')) hd = true;
-    else if (y < last - 4 || y <= 600) hd = false;
-    if (s !== sc) { sc = s; h.classList.toggle('scrolled', s); }
-    if (hd !== hid) { hid = hd; h.classList.toggle('hidden', hd); }
-    last = y;
-  };
-  upd();
-  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-})();
-
 /* ── Mobiles Menü ───────────────────────────────────────── */
 const menuBtn = $('#menu-btn');
 function closeMenu() {
@@ -85,34 +64,6 @@ if (menuBtn) {
   addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
   $$('#mobile-menu a').forEach((a) => a.addEventListener('click', closeMenu));
 }
-
-/* ── Reveals (IntersectionObserver, CSS-Übergänge) ──────── */
-(() => {
-  const els = $$('[data-reveal]');
-  if (!('IntersectionObserver' in window) || reduce) { els.forEach((el) => el.classList.add('in')); return; }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-  els.forEach((el) => io.observe(el));
-})();
-
-/* ── GSAP ────────── */
-function initGsap() {
-  if (!hasGsap() || reduce) return;
-  gsap.registerPlugin(ScrollTrigger);
-  // Mobile Adressleiste löst kein Neuberechnen aller Trigger aus
-  ScrollTrigger.config({ ignoreMobileResize: true });
-
-  // Finale-Karten: Licht folgt der Maus
-  $$('.finale-card').forEach((c) => c.addEventListener('pointermove', (e) => {
-    const r = c.getBoundingClientRect();
-    c.style.setProperty('--mx', `${e.clientX - r.left}px`);
-    c.style.setProperty('--my', `${e.clientY - r.top}px`);
-  }));
-
-  addEventListener('load', () => ScrollTrigger.refresh());
-}
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initGsap); else initGsap();
 
 /* ── Hero-Video: nur abspielen, wenn sichtbar und Bewegung erwünscht ── */
 (() => {
@@ -154,13 +105,6 @@ $$('[data-ext-video]').forEach((box) => {
   });
 });
 
-/* ── Logo-Band nur animieren, wenn es zu sehen ist ──────── */
-(() => {
-  const m = $('.marquee');
-  if (!m || !('IntersectionObserver' in window)) return;
-  new IntersectionObserver(([e]) => m.classList.toggle('paused', !e.isIntersecting)).observe(m);
-})();
-
 /* ── Videos: Loops erst laden, wenn sichtbar ────────────── */
 (() => {
   const vids = $$('video[data-lazy]');
@@ -178,21 +122,6 @@ $$('[data-ext-video]').forEach((box) => {
     });
   }, { rootMargin: '200px 0px' });
   vids.forEach((v) => io.observe(v));
-})();
-
-/* ── Stimmen: WKK zuerst, UKSH bei Bedarf ───────────────── */
-(() => {
-  const tabs = $$('.voice-tab');
-  if (!tabs.length) return;
-  tabs.forEach((tab) => tab.addEventListener('click', () => {
-    const key = tab.dataset.voice;
-    tabs.forEach((x) => x.setAttribute('aria-selected', String(x === tab)));
-    $$('.voice-stage [data-voice]').forEach((p) => {
-      const on = p.dataset.voice === key;
-      if (!on) { $('video', p).pause(); p.classList.toggle('playing', false); }
-      p.hidden = !on;
-    });
-  }));
 })();
 
 /* ── Player mit Cover (Videostatements) ─────────────────── */
