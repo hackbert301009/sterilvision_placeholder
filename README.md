@@ -7,7 +7,8 @@ Statisch (HTML, CSS, JS), kein Build-Schritt, gehostet über GitHub Pages.
 
 | Datei / Ordner | Inhalt |
 |---|---|
-| `index.html` | Startseite: Hero (Video der Prüfzelle), Finale und Wettbewerbe, BWKI-Film, Anlage, Klinikstimmen (WKK, UKSH), Team, Wegbegleiter |
+| `index.html` | Startseite: Hero (Video der Prüfzelle), Finale und Wettbewerbe (Presse nur als Hinweis, Details auf `presse.html`), BWKI-Film, Anlage, Klinikstimmen (WKK, UKSH), Team, Wegbegleiter |
+| `presse.html` | Presse: BWKI-Sonderpreis mit Fotos, NDR, Mitteldeutscher Rundfunk (MDR) mit Zwei-Klick-Video. Neue Berichte oben in `.media-index` und als eigener Abschnitt eintragen. Fotocredit immer „Foto: Bundeswettbewerb KI / Ale Zea“ |
 | `kontakt.html` | Kontaktformular (Formspree) mit Einwilligung |
 | `impressum.html`, `datenschutz.html` | Rechtliches |
 | `styles.css` | Corporate Design. Alle Farben, Schriften und Abstände als Tokens in `:root` |

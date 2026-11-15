@@ -1,6 +1,6 @@
 # ToDos SterilVision Website
 
-Stand: 14.11.2026. Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
+Stand: 15.11.2026. Grundlage ist die Recherche in [RECHERCHE-DESIGN-2026.md](RECHERCHE-DESIGN-2026.md) (alle Quellen dort, die wichtigsten hier direkt verlinkt).
 
 Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheidung. Ein einzelnes "KI-Muster" ist kein Problem, die Häufung ist es ([Auswertung von 1.590 Landingpages](https://adriankrebs.ch/blog/design-slop/), [Anthropic: Frontend Aesthetics](https://platform.claude.com/cookbook/coding-prompting-for-frontend-aesthetics), [Anthropic Blog](https://claude.com/blog/improving-frontend-design-through-skills)).
 
@@ -17,11 +17,14 @@ Leitlinie: weniger Dekoration, mehr Beleg, eine bewusste typografische Entscheid
 
 ## Neue Inhalte (warten auf Material)
 
-- [ ] **BWKI-Finale Tübingen, Sonderpreis "No risk, no fun!"**: Belegzeile im Hero und Abschnitt "Zweimal im Finale" aktualisieren. Als Fakt mit Kontext statt Badge (Datum, Ort, wofür der Preis steht). Link auf offizielle Mitteilung, sobald veröffentlicht ([bw-ki.de](https://www.bw-ki.de/), [Pressemitteilungen Uni Tübingen](https://uni-tuebingen.de/universitaet/aktuelles-und-publikationen/pressemitteilung/deutschlands-ki-nachwuchs-beim-bundeswettbewerb-kuenstliche-intelligenz-ausgezeichnet/), [Preisbeschreibung heise](https://heise.de/-9979191)). Eigenes Foto der Verleihung mit Bildunterschrift ist der stärkste Beleg.
+- [x] **Eigene Seite `presse.html`** (15.11.2026): alle Medienauftritte dort, Startseite nur mit Hinweis in der Belegzeile. Menüpunkt "Presse" auf allen Seiten verweist auf die neue Seite, Übersicht oben als Zeitleiste (Datum, Ereignis, Quelle)
+- [x] **BWKI-Finale Tübingen, Sonderpreis "No risk, no fun!"** für besondere Leistungen im Projekt, 750 Euro Preisgeld. Fünf Fotos von Ale Zea als WebP, Credit Pflicht: "Foto: Bundeswettbewerb KI / Ale Zea". Chip auf der Finale-Karte der Startseite
+- [x] **NDR**: NDR 1 Welle Nord, Nachrichten für Schleswig-Holstein, 13.11.2026, Artikel "Dithmarscher Finalist im KI-Bundeswettbewerb" auf ndr.de, nur als Link (kein Einbetten)
+- [ ] Link auf offizielle BWKI-Mitteilung zum Sonderpreis ergänzen, sobald veröffentlicht
 - [x] **Interview Mitteldeutscher Rundfunk**: Abschnitt "Im Fernsehen" (#presse) mit Sender, Sendung (Sachsenspiegel), Datum (12.11.2026), Beitragstitel und Link zur [ARD Mediathek](https://www.ardmediathek.de/video/Y3JpZDovL21kci5kZS9iZWl0cmFnL2Ntcy8yZDJiZmMzZi1hMzNkLTQ1N2ItYjhjYy02Nzc3ZGFhY2JjNzQ). Video wird erst nach Klick geladen (Zwei-Klick-Lösung), Datenschutzerklärung um Abschnitt "Fernsehbeitrag aus der ARD Mediathek" ergänzt. Eintrag in der Belegzeile im Hero und Menüpunkt "Presse".
 - [ ] Beitrag in der Mediathek verfügbar bis 12.11.2027. Vorher Link prüfen, danach Abschnitt auf reinen Text mit Quellenangabe umstellen.
 - [ ] Datenschutz-Abschnitt zur ARD Mediathek einmal juristisch gegenlesen lassen.
-- [ ] Abschnitt "Über uns berichtet" bzw. kleine Zeitleiste (Datum, Ereignis, Quelle) statt Logoleiste ([Evidence auf Webseiten](https://www.orbitmedia.com/blog/evidence-webpages/), [Social Proof](https://www.orbitmedia.com/blog/social-proof-web-design/))
+- [x] Kleine Zeitleiste (Datum, Ereignis, Quelle) statt Logoleiste, umgesetzt auf `presse.html` ([Evidence auf Webseiten](https://www.orbitmedia.com/blog/evidence-webpages/), [Social Proof](https://www.orbitmedia.com/blog/social-proof-web-design/))
 
 ## Hero, nächste Schritte
 
